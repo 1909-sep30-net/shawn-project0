@@ -4,15 +4,20 @@ using System.Text;
 
 namespace BusinessLibrary
 {
-    public class Product
+    public class Product : IProduct
     {
-        int ProductId;
-        int StockQuantity;
+        public string ProductId { get; set; }
+        public int StockQuantity { get; set; }
+        public string ProductName { get; set; }
+        public string ProductDesc { get; set; }
 
-        Product(int productId, int stockQuantity)
+        public Product()
         {
-            this.ProductId = productId;
-            this.StockQuantity = stockQuantity;
+            ProductId = Guid.NewGuid().ToString();
+
+
         }
     }
+
+
 }
