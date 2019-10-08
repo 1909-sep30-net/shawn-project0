@@ -7,7 +7,7 @@ namespace BusinessLibrary
         List<ICartItem> Products { get; set; }
 
         void AddItem(IProduct product, int quantity);
-        void RemoveItem(ICartItem product);
+        void RemoveItem(IProduct product, int quantity);
         List<ICartItem> InvetoryItems();
     }
 }

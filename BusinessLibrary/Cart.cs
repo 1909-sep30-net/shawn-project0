@@ -30,44 +30,56 @@ namespace BusinessLibrary
                     if (cartItem.ProductQuantinty + quantity <= product.StockQuantity) 
                     {
                         cartItem.ProductQuantinty += quantity;
-                        
+                        MessageHandler.SuccessfulAddition(product.ProductName, quantity);
                     } else
                     {
-                        MessageHandler.QuantityError(product.ProductName, product.StockQuantity, cartItem.ProductQuantinty);
+                        MessageHandler.LowStockError(product.ProductName, product.StockQuantity, cartItem.ProductQuantinty);
                     }
-                    
+                    return;
                 }
-
             }
-
-            if (match == true)
-            {
-                match = false;
-            } else
-            {
                 // If item is not in cart, prepare a cart item and add it to products list
-
                 if (quantity <= product.StockQuantity)
                 {
                     ICartItem NewCartItem = Factory.CreateCartItem();
                     NewCartItem.Product = product;
                     NewCartItem.ProductQuantinty = quantity;
                     Products.Add(NewCartItem);
+                    MessageHandler.SuccessfulAddition(product.ProductName, quantity);
                 }
                 else
                 {
-                    MessageHandler.QuantityError(product.ProductName, product.StockQuantity, quantity);
+                    MessageHandler.LowStockError(product.ProductName, product.StockQuantity, quantity);
+                }
+        }
+
+        public void RemoveItem(IProduct product, int quantity)
+        {
+            foreach (var cartItem in Products)
+            {
+                if (product.ProductId == cartItem.Product.ProductId)
+                {
+                    // If removal of items is greater than 0, change quantity
+                    if (cartItem.ProductQuantinty - quantity > 0)
+                    {
+                        cartItem.ProductQuantinty -= quantity;
+                        MessageHandler.SuccessfulRemove(product.ProductName, quantity);
+                    }
+                    // If removal of items is 0 or less, remove the cart item
+                    else
+                    {
+                        Products.Remove(cartItem);
+                        MessageHandler.SuccessfulRemove(product.ProductName);
+                    }
+
+                    return;
                 }
             }
         }
 
-        public void RemoveItem(ICartItem product)
-        {
-            Products.Remove(product);
-        }
-
         public List<ICartItem> InvetoryItems()
         {
+
             Console.WriteLine("----------");
             foreach (var item in Products)
             {
