@@ -26,6 +26,16 @@ namespace BusinessLibrary
             return new CartItem();
         }
 
+        public static List<ICartItem> CreateCartItemList()
+        {
+            return new List<ICartItem>();
+        }
+
+        public static UpdateCart CartHandler()
+        {
+            return new UpdateCart();
+        }
+
     }
 
 }
