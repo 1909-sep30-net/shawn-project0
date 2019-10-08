@@ -17,7 +17,7 @@ namespace BusinessLibrary
         public Customer() 
         { 
             CustomerId = Guid.NewGuid().ToString();
-            CustomerCart = Factory.CreateCart();
+            CustomerCart = Factory.CreateCart(this);
         }
 
     }

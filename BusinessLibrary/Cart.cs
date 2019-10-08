@@ -8,10 +8,12 @@ namespace BusinessLibrary
     public class Cart : ICart
     {
         public List<ICartItem> Products { get; set; }
+        public ICustomer Owner { get; set; }
 
-        public Cart()
+        public Cart(ICustomer owner)
         {
             Products = new List<ICartItem>();
+            this.Owner = owner;
         }
 
         public void AddItem(IProduct product, int quantity)
@@ -80,7 +82,7 @@ namespace BusinessLibrary
         public void InvetoryItems()
         {
 
-            MessageHandler.ItemsInCart(Products);
+            MessageHandler.ItemsInCart(Products, Owner);
 
         }
 

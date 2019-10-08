@@ -11,9 +11,9 @@ namespace BusinessLibrary
             return new Customer();
         }
 
-        public static ICart CreateCart()
+        public static ICart CreateCart(ICustomer Owner)
         {
-            return new Cart();
+            return new Cart(Owner);
         }
 
         public static IProduct CreateProduct()
