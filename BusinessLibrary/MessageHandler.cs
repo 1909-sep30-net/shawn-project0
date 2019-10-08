@@ -26,5 +26,18 @@ namespace BusinessLibrary
             Console.WriteLine($"Successfully added {quantity} of {product.ProductName} to order. (Product Id : {product.ProductId})");
         }
 
+        public static void ItemsInCart(List<ICartItem> cart)
+        {
+                Console.WriteLine("========================");
+            foreach (ICartItem item in cart)
+            {
+                Console.WriteLine($"Item : {item.Product.ProductName}");
+                Console.WriteLine($"Desc : {item.Product.ProductDesc}");
+                Console.WriteLine($"IdNo : {item.Product.ProductId}");
+                Console.WriteLine($" Qty : {item.ProductQuantinty}");
+                Console.WriteLine("========================");
+            }
+        }
+
     }
 }

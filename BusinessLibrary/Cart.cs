@@ -77,17 +77,11 @@ namespace BusinessLibrary
             }
         }
 
-        public List<ICartItem> InvetoryItems()
+        public void InvetoryItems()
         {
 
-            Console.WriteLine("----------");
-            foreach (var item in Products)
-            {
-                Console.WriteLine($"{item.Product.ProductName} {item.ProductQuantinty}");
-                //Console.WriteLine($"{item.Product.ProductId}\t\t {item.Product.ProductName}\t\t {item.Product.ProductDesc}\t\t {item.Product.StockQuantity} \t\t {item.ProductQuantinty}");
-            }
-            Console.WriteLine("----------");
-            return Products;
+            MessageHandler.ItemsInCart(Products);
+
         }
 
     }

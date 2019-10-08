@@ -8,6 +8,6 @@ namespace BusinessLibrary
 
         void AddItem(IProduct product, int quantity);
         void RemoveItem(IProduct product, int quantity);
-        List<ICartItem> InvetoryItems();
+        void InvetoryItems();
     }
 }
