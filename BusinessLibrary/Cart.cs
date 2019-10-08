@@ -19,7 +19,7 @@ namespace BusinessLibrary
         public List<ICartItem> Products { get; set; }
         public ICustomer Owner { get; set; }
 
-        public UpdateCart UpdateCart { get; }
+        public IUpdateCart UpdateCart { get; }
 
         public Cart(ICustomer owner)
         {

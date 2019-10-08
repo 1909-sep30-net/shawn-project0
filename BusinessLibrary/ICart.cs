@@ -8,6 +8,6 @@ namespace BusinessLibrary
         ICustomer Owner { get; set; }
         void InvetoryItems();
 
-        UpdateCart UpdateCart { get; }
+        IUpdateCart UpdateCart { get; }
     }
 }

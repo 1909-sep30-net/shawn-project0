@@ -8,7 +8,7 @@ namespace BusinessLibrary
     {
         public static void LowStockError(IProduct product, int customerQuantity)
         {
-            Console.WriteLine($"There are only {product.StockQuantity} of the {product.ProductDesc} in stock. No action taken. (Product Id : {product.ProductId}");
+            Console.WriteLine($"There are only {product.StockQuantity} of the {product.ProductDesc} in stock. No action taken. (Product Id : {product.ProductId})");
         }
 
         public static void SuccessfulRemove(IProduct product, int quantity)

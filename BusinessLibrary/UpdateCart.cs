@@ -4,7 +4,20 @@ using System.Text;
 
 namespace BusinessLibrary
 {
-    public class UpdateCart
+
+    /// <summary>
+    /// UpdateCart Class holds actions to add or remove items from Cart
+    /// AddItem(Products, product, quanity) :
+    ///     Products is the entire list of items in cart.
+    ///     product is the selected product.
+    ///     quantity is the amount of product you want added to the cart.
+    /// RemoveItem(Products, product, quanity) :
+    ///     Products is the entire list of items in cart.
+    ///     product is the selected product.
+    ///     quantity is the amount of product you want removed from the cart.
+    /// </summary>
+
+    public class UpdateCart : IUpdateCart
     {
         public void AddItem(List<ICartItem> Products, IProduct product, int quantity)
         {

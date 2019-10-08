@@ -14,22 +14,129 @@ namespace Project0
             //temp data
             var productDB = CustomerDataHandler.GetProducts();
             var customerDB = CustomerDataHandler.GetCustomers();
-            var CurrCustomer = "2131afca-7588-479e-84f5-d3a1ff255b40";
-            var bike = "cd9eefc1-70d1-40e7-9de3-d3b4462f3961";
-            var bread = "d7a54dbe-5795-4a74-94c2-89e5e1e9e8df";
 
-            //customerDB[CurrCustomer].CustomerCart.AddItem(productDB[bread], 8);
+            //begin temp UI
+            var UserInput = "MainMenu";
+            string User_CurrCustomerId = "";
 
-            //customerDB[CurrCustomer].CustomerCart.AddItem(productDB[bike], 5);
-            customerDB[CurrCustomer].CustomerCart.UpdateCart.AddItem(customerDB[CurrCustomer].CustomerCart.Products, productDB[bike], 5);
+            while (true)
+            {
+                if (UserInput == "MainMenu")
+                {
+                    Console.WriteLine("Enter a command : ");
+                    Console.WriteLine("O => Start new order");
+                    Console.WriteLine("A => Add new customer");
+                    Console.WriteLine("C => View customer history");
+                    Console.WriteLine("S => View store history");
 
-            //customerDB[CurrCustomer].CustomerCart.RemoveItem(productDB[bike], 2);
-            customerDB[CurrCustomer].CustomerCart.UpdateCart.RemoveItem(customerDB[CurrCustomer].CustomerCart.Products, productDB[bike], 2);
+                    UserInput = Console.ReadLine().ToLower();
 
-            //customerDB[CurrCustomer].CustomerCart.AddItem(productDB[bike], 17);
+                }
+                else if (UserInput == "a") 
+                {
+                    Console.WriteLine("Add new customer...");
+                }
+                else if (UserInput == "c")
+                {
+                    Console.WriteLine("customer history...");
+                }
+                else if (UserInput == "s")
+                {
+                    Console.WriteLine("store history...");
+                }
+                else if (UserInput == "o")
+                {
+                    if (User_CurrCustomerId == "")
+                    {
+                        Console.WriteLine("Enter CustomerId : ");
+                        User_CurrCustomerId = Console.ReadLine();
+                                                
+                    }
 
-            customerDB["2131afca-7588-479e-84f5-d3a1ff255b40"].CustomerCart.InvetoryItems();
+                    if (!customerDB.ContainsKey(User_CurrCustomerId))
+                    {
+                        User_CurrCustomerId = "";
+                        UserInput = "o";
+                        Console.WriteLine("Invalid Customer Id.");
+                    }
+                    else
+                    {
+
+                        Console.WriteLine("A => Add product");
+                        Console.WriteLine("R => Remove product");
+                        Console.WriteLine("V => View current order");
+                        Console.WriteLine("P => Place order");
+                        Console.WriteLine("XCX => Cancel order");
+
+                        UserInput = Console.ReadLine().ToLower();
+                    }
+
+                    if (UserInput == "a")
+                    {
+                        Console.WriteLine("Enter ProductId : ");
+                        var User_CurrProductId = Console.ReadLine();
+
+                        if (productDB.ContainsKey(User_CurrProductId))
+                        {
+                            Console.WriteLine("Enter Quantity : ");
+                            int User_Quantity = Convert.ToInt32(Console.ReadLine());
+                            customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.AddItem(customerDB[User_CurrCustomerId].CustomerCart.Products, productDB[User_CurrProductId], User_Quantity);
+                        } 
+                        else
+                        {
+                            Console.WriteLine("Invalid Product Id");
+                            UserInput = "a";
+                        } 
+                    }
+                    else if (UserInput == "r")
+                    {
+                        Console.WriteLine("Enter ProductId : ");
+                        var User_CurrProductId = Console.ReadLine();
+
+                        if (productDB.ContainsKey(User_CurrProductId))
+                        {
+                            Console.WriteLine("Enter Quantity : ");
+                            int User_Quantity = Convert.ToInt32(Console.ReadLine());
+                            customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.RemoveItem(customerDB[User_CurrCustomerId].CustomerCart.Products, productDB[User_CurrProductId], User_Quantity);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid Product Id");
+                            UserInput = "a";
+                        }
+                    }
+                    else if (UserInput == "v")
+                    {
+                        customerDB[User_CurrCustomerId].CustomerCart.InvetoryItems();
+                    }
+                    else if (UserInput == "p")
+                    {
+                        Console.WriteLine("OrderPlaced");
+                        User_CurrCustomerId = "";
+                        UserInput = "MainMenu";
+                    }
+                    else if (UserInput == "xcx")
+                    {
+                        UserInput = "MainMenu";
+                        customerDB[User_CurrCustomerId].CustomerCart.Products.Clear();
+                    }
+
+                    //return to order menu
+                    if (UserInput != "MainMenu")
+                    {
+                        UserInput = "o";
+                    }
+
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Option");
+                    UserInput = Console.ReadLine();
+                }
+            }
         }
+
+
 
     }
 }

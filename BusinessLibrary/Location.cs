@@ -8,6 +8,8 @@ namespace BusinessLibrary
     {
         public int LocationId { get; }
 
+        public List<ICartItem> Products { get; set; }
+
         Location(int locationId)
         {
             this.LocationId = locationId;
