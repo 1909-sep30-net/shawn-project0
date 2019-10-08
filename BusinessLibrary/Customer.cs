@@ -9,7 +9,7 @@ namespace BusinessLibrary
         public string NameFirst { get; set; }
         public string NameLast { get; set; }
         public string CustomerId { get; }
-        public Cart CustomerCart { get; set; }
+        public ICart CustomerCart { get; set; }
 
 
         //public List<string> customerInfo = new List<string>();

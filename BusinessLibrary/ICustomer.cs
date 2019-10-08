@@ -7,7 +7,7 @@ namespace BusinessLibrary
         string CustomerId { get; }
         string NameFirst { get; set; }
         string NameLast { get; set; }
-        Cart CustomerCart { get; set; }
+        ICart CustomerCart { get; set; }
 
     }
 }

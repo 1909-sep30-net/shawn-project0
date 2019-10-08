@@ -4,10 +4,10 @@ namespace BusinessLibrary
 {
     public interface ICart
     {
-        List<IProduct> Products { get; set; }
+        List<ICartItem> Products { get; set; }
 
-        void AddItem(IProduct product);
-        void RemoveItem(IProduct product);
-        List<IProduct> InvetoryItems();
+        void AddItem(IProduct product, int quantity);
+        void RemoveItem(ICartItem product);
+        List<ICartItem> InvetoryItems();
     }
 }

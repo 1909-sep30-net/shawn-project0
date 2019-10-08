@@ -22,20 +22,34 @@ namespace Project0
             bread.ProductName = "Moms Bannana Bread";
             bread.ProductDesc = "Old Bananas, Fresh Bread";
             bread.StockQuantity = 25;
-
-            ICustomer bugs = Factory.CreateCustomer();
-            bugs.NameFirst = "Bugs";
-            bugs.NameLast = "Bunny";
-
-             Console.WriteLine($"Customer is {bugs.NameFirst} {bugs.NameLast} and his customer id is {bugs.CustomerId}.");
             
-            bugs.CustomerCart.AddItem(bike);
-            bugs.CustomerCart.AddItem(bread);
 
-            bugs.CustomerCart.InvetoryItems();
 
-            bugs.CustomerCart.RemoveItem(bread);
-            bugs.CustomerCart.InvetoryItems();
+            //Console.WriteLine(selectBread.Product.ProductName);
+
+            //ICustomer bugs = Factory.CreateCustomer();
+            //bugs.NameFirst = "Bugs";
+            //bugs.NameLast = "Bunny";
+
+            //Console.WriteLine($"Customer is {bugs.NameFirst} {bugs.NameLast} and his customer id is {bugs.CustomerId}.");
+
+            //bugs.CustomerCart.AddItem(bike);
+            //bugs.CustomerCart.AddItem(bread);
+
+            //bugs.CustomerCart.InvetoryItems();
+
+            //bugs.CustomerCart.RemoveItem(bread);
+            //bugs.CustomerCart.InvetoryItems();
+
+            var customerDB = CustomerDataHandler.GetCustomers();
+            string CurrCustomer = "2131afca-7588-479e-84f5-d3a1ff255b40";
+            Console.WriteLine($"Customer is {customerDB[CurrCustomer].NameFirst} {customerDB[CurrCustomer].CustomerId}.");
+            customerDB[CurrCustomer].CustomerCart.AddItem(bread, 5);
+            customerDB["2131afca-7588-479e-84f5-d3a1ff255b40"].CustomerCart.InvetoryItems();
+
+            customerDB[CurrCustomer].CustomerCart.AddItem(bread, 5);
+            customerDB["2131afca-7588-479e-84f5-d3a1ff255b40"].CustomerCart.InvetoryItems();
+
 
 
         }

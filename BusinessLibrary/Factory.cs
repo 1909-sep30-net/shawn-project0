@@ -4,14 +4,14 @@ using System.Text;
 
 namespace BusinessLibrary
 {
-    public class Factory
+    public static class Factory
     {
         public static ICustomer CreateCustomer()
         {
             return new Customer();
         }
 
-        public static Cart CreateCart()
+        public static ICart CreateCart()
         {
             return new Cart();
         }
@@ -19,6 +19,11 @@ namespace BusinessLibrary
         public static IProduct CreateProduct()
         {
             return new Product();
+        }
+
+        public static ICartItem CreateCartItem()
+        {
+            return new CartItem();
         }
 
     }
