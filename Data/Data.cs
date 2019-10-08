@@ -18,17 +18,35 @@ namespace Data
 
         public static Dictionary<string, Customer> GetCustomers()
         {
+            //Temporary customer data
             var jsonFilePathCustomers = @"C:\revature\shawn-project0\Data\customersData.json";
 
             try
             {
                 var CustomersDictionary = JsonConvert.DeserializeObject<Dictionary<string, Customer>>(File.ReadAllText(jsonFilePathCustomers));
-                //Console.WriteLine(CustomersDictionary["2131afca-7588-479e-84f5-d3a1ff255b40"]);
                 return CustomersDictionary;
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Something went wrong : " + ex.Message.ToString());
+                Console.WriteLine("Something went wrong with cust data: " + ex.Message.ToString());
+            }
+            return null;
+            
+        }
+
+        public static Dictionary<string, Product> GetProducts()
+        {
+            //Temporary product data
+            var jsonFilePathProducts = @"C:\revature\shawn-project0\Data\productsData.json";
+
+            try
+            {
+                var ProductsDictionary = JsonConvert.DeserializeObject<Dictionary<string, Product>>(File.ReadAllText(jsonFilePathProducts));
+                return ProductsDictionary;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong with product data: " + ex.Message.ToString());
             }
             return null;
 
