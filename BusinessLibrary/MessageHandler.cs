@@ -6,24 +6,24 @@ namespace BusinessLibrary
 {
     public static class MessageHandler
     {
-        public static void LowStockError(string product, int stockQuantity, int customerQuantity)
+        public static void LowStockError(IProduct product, int customerQuantity)
         {
-            Console.WriteLine($"There are only {stockQuantity} of the {product} in stock. No action taken.");
+            Console.WriteLine($"There are only {product.StockQuantity} of the {product.ProductDesc} in stock. No action taken. (Product Id : {product.ProductId}");
         }
 
-        public static void SuccessfulRemove(string product, int quantity)
+        public static void SuccessfulRemove(IProduct product, int quantity)
         {
-            Console.WriteLine($"Successfully removed {quantity} of {product} from order.");
+            Console.WriteLine($"Successfully removed {quantity} of {product.ProductName} from order. (Product Id : {product.ProductId})");
         }
 
-        public static void SuccessfulRemove(string product)
+        public static void SuccessfulRemove(IProduct product)
         {
-            Console.WriteLine($"Successfully removed all {product} from order.");
+            Console.WriteLine($"Successfully removed all {product.ProductName} from order. (Product Id : {product.ProductId})");
         }
 
-        public static void SuccessfulAddition(string product, int quantity)
+        public static void SuccessfulAddition(IProduct product, int quantity)
         {
-            Console.WriteLine($"Successfully added {quantity} of {product} to order.");
+            Console.WriteLine($"Successfully added {quantity} of {product.ProductName} to order. (Product Id : {product.ProductId})");
         }
 
     }

@@ -30,10 +30,10 @@ namespace BusinessLibrary
                     if (cartItem.ProductQuantinty + quantity <= product.StockQuantity) 
                     {
                         cartItem.ProductQuantinty += quantity;
-                        MessageHandler.SuccessfulAddition(product.ProductName, quantity);
+                        MessageHandler.SuccessfulAddition(product, quantity);
                     } else
                     {
-                        MessageHandler.LowStockError(product.ProductName, product.StockQuantity, cartItem.ProductQuantinty);
+                        MessageHandler.LowStockError(product, cartItem.ProductQuantinty);
                     }
                     return;
                 }
@@ -45,11 +45,11 @@ namespace BusinessLibrary
                     NewCartItem.Product = product;
                     NewCartItem.ProductQuantinty = quantity;
                     Products.Add(NewCartItem);
-                    MessageHandler.SuccessfulAddition(product.ProductName, quantity);
+                    MessageHandler.SuccessfulAddition(product, quantity);
                 }
                 else
                 {
-                    MessageHandler.LowStockError(product.ProductName, product.StockQuantity, quantity);
+                    MessageHandler.LowStockError(product, quantity);
                 }
         }
 
@@ -63,13 +63,13 @@ namespace BusinessLibrary
                     if (cartItem.ProductQuantinty - quantity > 0)
                     {
                         cartItem.ProductQuantinty -= quantity;
-                        MessageHandler.SuccessfulRemove(product.ProductName, quantity);
+                        MessageHandler.SuccessfulRemove(product, quantity);
                     }
                     // If removal of items is 0 or less, remove the cart item
                     else
                     {
                         Products.Remove(cartItem);
-                        MessageHandler.SuccessfulRemove(product.ProductName);
+                        MessageHandler.SuccessfulRemove(product);
                     }
 
                     return;
