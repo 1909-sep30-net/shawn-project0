@@ -1,23 +1,37 @@
 {
-  "001" : {
-    "cd9eefc1-70d1-40e7-9de3-d3b4462f3961": {"ProductId": "cd9eefc1-70d1-40e7-9de3-d3b4462f3961",
-  "ProductName": "Banana Bike",
-  "ProductDesc": "Yellow banana bike",
-  "StockQuantity": 18},
-  "cd9eefc1-70d1-40e7-9de3-d3b4462f3962":{"ProductId": "cd9eefc1-70d1-40e7-9de3-d3b4462f3962",
-  "ProductName": "Moms Banana Bread",
-  "ProductDesc": "Old bananas, fresh bread",
-  "StockQuantity": 20}
+  "$id": "1",
+  "001": {
+    "$id": "2",
+    "cd9eefc1-70d1-40e7-9de3-d3b4462f3961": {
+      "$id": "3",
+      "ProductId": "cd9eefc1-70d1-40e7-9de3-d3b4462f3961",
+      "StockQuantity": 15,
+      "ProductName": "Banana Bike",
+      "ProductDesc": "Yellow banana bike"
+    },
+    "cd9eefc1-70d1-40e7-9de3-d3b4462f3962": {
+      "$id": "4",
+      "ProductId": "cd9eefc1-70d1-40e7-9de3-d3b4462f3962",
+      "StockQuantity": 20,
+      "ProductName": "Moms Banana Bread",
+      "ProductDesc": "Old bananas, fresh bread"
+    }
   },
-  "002" : {
-    "cd9eefc1-70d1-40e7-9de3-d3b4462f3961":
-    {"ProductId": "cd9eefc1-70d1-40e7-9de3-d3b4462f3961",
-  "ProductName": "Banana Bike",
-  "ProductDesc": "Yellow banana bike",
-  "StockQuantity": 8},
-  "cd9eefc1-70d1-40e7-9de3-d3b4462f3962":{"ProductId": "cd9eefc1-70d1-40e7-9de3-d3b4462f3962",
-  "ProductName": "Moms Banana Bread",
-  "ProductDesc": "Old bananas, fresh bread",
-  "StockQuantity": 30}
+  "002": {
+    "$id": "5",
+    "cd9eefc1-70d1-40e7-9de3-d3b4462f3961": {
+      "$id": "6",
+      "ProductId": "cd9eefc1-70d1-40e7-9de3-d3b4462f3961",
+      "StockQuantity": 8,
+      "ProductName": "Banana Bike",
+      "ProductDesc": "Yellow banana bike"
+    },
+    "cd9eefc1-70d1-40e7-9de3-d3b4462f3962": {
+      "$id": "7",
+      "ProductId": "cd9eefc1-70d1-40e7-9de3-d3b4462f3962",
+      "StockQuantity": 30,
+      "ProductName": "Moms Banana Bread",
+      "ProductDesc": "Old bananas, fresh bread"
+    }
   }
 }

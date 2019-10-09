@@ -4,7 +4,7 @@ using System.Text;
 using BusinessLibrary;
 
 /// <summary>
-/// Cart contains a list, Products, of ICartItems.
+/// Cart contains a list named Products containing of ICartItems.
 /// ICartItems is an object containing:
 ///     a Product Object (Product Id, Product Name, Product Desc, Product Stock)
 ///     Order amount (The amount the customer requested)

@@ -16,17 +16,11 @@ namespace Project0
             //temp data
             var customerDB = CustomerDataHandler.GetCustomers();
             var productDB = CustomerDataHandler.GetMoreProducts();
+            //var stufftoorder = new List<ICartItem>();
 
-            //var productDB001 = productLocationDB["001"];
-            //var productDB002 = productLocationDB["002"];
+            //var ordersomething = new CustomerOrder("2131afca - 7588 - 479e-84f5 - d3a1ff255b40", "001", stufftoorder, productDB);
 
-            //Customer testCustomer = (Customer)Factory.CreateCustomer();
-            //testCustomer.NameFirst = "Elmer";
-            //testCustomer.NameLast = "Fudd";
-
-            //customerDB.Add(testCustomer.CustomerId, testCustomer);
-
-            //CustomerDataHandler.SaveCustomers(customerDB);
+            //ordersomething.PlaceOrder();
 
             //begin temp UI
             var UserInput = "MainMenu";
@@ -154,6 +148,14 @@ namespace Project0
                     }
                     else if (UserInput == "p")
                     {
+                        //SaveProducts(Dictionary<string, Dictionary<string, Product>> productDb)
+                        var PlaceOrder = new CustomerOrder(User_CurrCustomerId, User_CurrLocationId, customerDB[User_CurrCustomerId].CustomerCart.Products, productDB);
+                        CustomerDataHandler.SaveProducts(PlaceOrder.UpdateLocationStock());
+
+                        //put history loggers here
+
+
+
                         Console.WriteLine("OrderPlaced");
                         User_CurrCustomerId = "";
                         User_CurrLocationId = "";

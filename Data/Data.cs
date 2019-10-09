@@ -19,11 +19,11 @@ namespace Data
         public static Dictionary<string, Customer> GetCustomers()
         {
             //Temporary customer data
-            var jsonFilePathCustomers = @"C:\revature\shawn-project0\Data\customersData.json";
+            var jsonFilePath = @"C:\revature\shawn-project0\Data\customersData.json";
 
             try
             {
-                var CustomersDictionary = JsonConvert.DeserializeObject<Dictionary<string, Customer>>(File.ReadAllText(jsonFilePathCustomers));
+                var CustomersDictionary = JsonConvert.DeserializeObject<Dictionary<string, Customer>>(File.ReadAllText(jsonFilePath));
                 return CustomersDictionary;
             }
             catch (Exception ex)
@@ -37,8 +37,8 @@ namespace Data
         public static void SaveCustomers(Dictionary<string, Customer> customerDB)
         {
             //Temporary customer data
-            var jsonFilePathCustomers = @"C:\revature\shawn-project0\Data\customersData.json";
-            string jsonCustomerDB = JsonConvert.SerializeObject(customerDB, new JsonSerializerSettings()
+            var jsonFilePath = @"C:\revature\shawn-project0\Data\customersData.json";
+            string jsonCustomerDb = JsonConvert.SerializeObject(customerDB, new JsonSerializerSettings()
             {
                 Formatting = Formatting.Indented,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
@@ -46,7 +46,7 @@ namespace Data
             
             try
             {
-                File.WriteAllText(jsonFilePathCustomers, jsonCustomerDB);
+                File.WriteAllText(jsonFilePath, jsonCustomerDb);
             }
             catch (Exception ex)
             {
@@ -54,32 +54,16 @@ namespace Data
             }
         }
 
-        public static Dictionary<string, Product> GetProducts()
-        {
-            //Temporary product data
-            var jsonFilePathProducts = @"C:\revature\shawn-project0\Data\productsData.json";
 
-            try
-            {
-                var ProductsDictionary = JsonConvert.DeserializeObject<Dictionary<string, Product>>(File.ReadAllText(jsonFilePathProducts));
-                return ProductsDictionary;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Something went wrong with product data: " + ex.Message.ToString());
-            }
-            return null;
-
-        }
 
         public static Dictionary<string, Dictionary<string, Product>> GetMoreProducts()
         {
             //Temporary product data
-            var jsonFilePathProducts = @"C:\revature\shawn-project0\Data\productDataLocation.json";
+            var jsonFilePath = @"C:\revature\shawn-project0\Data\productDataLocation.json";
 
             try
             {
-                var ProductsDictionary = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Product>>>(File.ReadAllText(jsonFilePathProducts));
+                var ProductsDictionary = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Product>>>(File.ReadAllText(jsonFilePath));
                 return ProductsDictionary;
             }
             catch (Exception ex)
@@ -89,6 +73,48 @@ namespace Data
             return null;
 
         }
+
+        public static void SaveProducts(Dictionary<string, Dictionary<string, Product>> productDb)
+        {
+            //Temporary customer data
+            var jsonFilePath = @"C:\revature\shawn-project0\Data\productDataLocation.json";
+            string jsonProductDb = JsonConvert.SerializeObject(productDb, new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            });
+
+            try
+            {
+                File.WriteAllText(jsonFilePath, jsonProductDb);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong with saving product stock data: " + ex.Message.ToString());
+            }
+        }
+
+        public static void SaveOrderLogIds(Dictionary<string, Dictionary<string, Product>> productDb)
+        {
+            //Temporary customer data
+            var jsonFilePath = @"C:\revature\shawn-project0\Data\orderLogIds.json";
+            string jsonProductDb = JsonConvert.SerializeObject(productDb, new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented,
+                PreserveReferencesHandling = PreserveReferencesHandling.Objects
+            });
+
+            try
+            {
+                File.WriteAllText(jsonFilePath, jsonProductDb);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong with saving product stock data: " + ex.Message.ToString());
+            }
+        }
+
+
 
     }
 
