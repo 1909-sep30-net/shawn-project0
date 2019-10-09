@@ -1,12 +1,59 @@
 {
-  "2131afca-7588-479e-84f5-d3a1ff255b40" : {"CustomerId": "2131afca-7588-479e-84f5-d3a1ff255b40",
-  "NameFirst": "Bugs",
-  "NameLast": "Bunny",
-  "CustomerCart": {}
+  "$id": "1",
+  "2131afca-7588-479e-84f5-d3a1ff255b40": {
+    "$id": "2",
+    "NameFirst": "Bugs",
+    "NameLast": "Bunny",
+    "CustomerId": "ab8b2362-6d13-473a-8008-582cde8403e9",
+    "CustomerCart": {
+      "$id": "3",
+      "Products": [],
+      "Owner": {
+        "$ref": "2"
+      },
+      "UpdateCart": {}
+    }
   },
-  "a973adf3-a37a-4ba6-82a6-19a089190cd5" : {"CustomerId": "a973adf3-a37-4ba6-82a6-19a089190cd5",
-  "NameFirst": "Daffy",
-  "NameLast": "Duck",
-  "CustomerCart": {}
+  "a973adf3-a37a-4ba6-82a6-19a089190cd5": {
+    "$id": "4",
+    "NameFirst": "Daffy",
+    "NameLast": "Duck",
+    "CustomerId": "12aaf90c-c86c-402f-b9f1-8fcd52a3a896",
+    "CustomerCart": {
+      "$id": "5",
+      "Products": [],
+      "Owner": {
+        "$ref": "4"
+      },
+      "UpdateCart": {}
+    }
+  },
+  "d85a241c-446d-46b6-9def-056d7659915a": {
+    "$id": "6",
+    "NameFirst": "Road",
+    "NameLast": "Runner",
+    "CustomerId": "40cd9162-7e47-42a9-9b25-59a8903a3961",
+    "CustomerCart": {
+      "$id": "7",
+      "Products": [],
+      "Owner": {
+        "$ref": "6"
+      },
+      "UpdateCart": {}
+    }
+  },
+  "f1c2bc25-d9f4-4ae1-8bb8-e36d542f3620": {
+    "$id": "8",
+    "NameFirst": "Daffy",
+    "NameLast": "Duck",
+    "CustomerId": "f1c2bc25-d9f4-4ae1-8bb8-e36d542f3620",
+    "CustomerCart": {
+      "$id": "9",
+      "Products": [],
+      "Owner": {
+        "$ref": "8"
+      },
+      "UpdateCart": {}
+    }
   }
 }

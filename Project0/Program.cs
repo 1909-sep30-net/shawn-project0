@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using BusinessLibrary;
 using Data;
+
 
 namespace Project0
 {
@@ -12,12 +14,24 @@ namespace Project0
         {
             
             //temp data
-            var productDB = CustomerDataHandler.GetProducts();
             var customerDB = CustomerDataHandler.GetCustomers();
+            var productDB = CustomerDataHandler.GetMoreProducts();
+
+            //var productDB001 = productLocationDB["001"];
+            //var productDB002 = productLocationDB["002"];
+
+            //Customer testCustomer = (Customer)Factory.CreateCustomer();
+            //testCustomer.NameFirst = "Elmer";
+            //testCustomer.NameLast = "Fudd";
+
+            //customerDB.Add(testCustomer.CustomerId, testCustomer);
+
+            //CustomerDataHandler.SaveCustomers(customerDB);
 
             //begin temp UI
             var UserInput = "MainMenu";
             string User_CurrCustomerId = "";
+            string User_CurrLocationId = "";
 
             while (true)
             {
@@ -35,6 +49,21 @@ namespace Project0
                 else if (UserInput == "a") 
                 {
                     Console.WriteLine("Add new customer...");
+                    Console.WriteLine("Enter first name of new customer :");
+                    var User_NameFirst = Console.ReadLine();
+
+                    Console.WriteLine("Enter last name of new customer :");
+                    var User_NameLast = Console.ReadLine();
+
+                    Customer NewCustomer = (Customer)Factory.CreateCustomer();
+                    NewCustomer.NameFirst = User_NameFirst;
+                    NewCustomer.NameLast = User_NameLast;
+
+                    customerDB.Add(NewCustomer.CustomerId, NewCustomer);
+
+                    CustomerDataHandler.SaveCustomers(customerDB);
+                    Console.WriteLine($"Customer has been created with id of : {NewCustomer.CustomerId}");
+                    UserInput = "MainMenu";
                 }
                 else if (UserInput == "c")
                 {
@@ -53,7 +82,7 @@ namespace Project0
                                                 
                     }
 
-                    if (!customerDB.ContainsKey(User_CurrCustomerId))
+                    if (!ValidationHandler.CheckCustomerId(User_CurrCustomerId, customerDB))//!customerDB.ContainsKey(User_CurrCustomerId))
                     {
                         User_CurrCustomerId = "";
                         UserInput = "o";
@@ -61,26 +90,40 @@ namespace Project0
                     }
                     else
                     {
+                        if (User_CurrLocationId == "")
+                        {
+                            Console.WriteLine("Enter LocationId : ");
+                            User_CurrLocationId = Console.ReadLine();
+                        }
 
-                        Console.WriteLine("A => Add product");
-                        Console.WriteLine("R => Remove product");
-                        Console.WriteLine("V => View current order");
-                        Console.WriteLine("P => Place order");
-                        Console.WriteLine("XCX => Cancel order");
+                        if (ValidationHandler.CheckLocationId(User_CurrLocationId, productDB))
+                        {
 
-                        UserInput = Console.ReadLine().ToLower();
+                            Console.WriteLine("A => Add product");
+                            Console.WriteLine("R => Remove product");
+                            Console.WriteLine("V => View current order");
+                            Console.WriteLine("P => Place order");
+                            Console.WriteLine("XCX => Cancel order");
+                            UserInput = Console.ReadLine().ToLower();
+                        } else
+                        {
+                            Console.WriteLine("Invalid Location Id");
+                            User_CurrLocationId = "";
+                            UserInput = "o";
+                        }
                     }
 
                     if (UserInput == "a")
                     {
+
                         Console.WriteLine("Enter ProductId : ");
                         var User_CurrProductId = Console.ReadLine();
 
-                        if (productDB.ContainsKey(User_CurrProductId))
+                        if (ValidationHandler.CheckProductId(User_CurrProductId, productDB[User_CurrLocationId]))
                         {
                             Console.WriteLine("Enter Quantity : ");
                             int User_Quantity = Convert.ToInt32(Console.ReadLine());
-                            customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.AddItem(customerDB[User_CurrCustomerId].CustomerCart.Products, productDB[User_CurrProductId], User_Quantity);
+                            customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.AddItem(customerDB[User_CurrCustomerId].CustomerCart.Products, productDB[User_CurrLocationId][User_CurrProductId], User_Quantity);
                         } 
                         else
                         {
@@ -93,11 +136,11 @@ namespace Project0
                         Console.WriteLine("Enter ProductId : ");
                         var User_CurrProductId = Console.ReadLine();
 
-                        if (productDB.ContainsKey(User_CurrProductId))
+                        if (productDB[User_CurrLocationId].ContainsKey(User_CurrProductId))
                         {
                             Console.WriteLine("Enter Quantity : ");
                             int User_Quantity = Convert.ToInt32(Console.ReadLine());
-                            customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.RemoveItem(customerDB[User_CurrCustomerId].CustomerCart.Products, productDB[User_CurrProductId], User_Quantity);
+                            customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.RemoveItem(customerDB[User_CurrCustomerId].CustomerCart.Products, productDB[User_CurrLocationId][User_CurrProductId], User_Quantity);
                         }
                         else
                         {
@@ -113,12 +156,14 @@ namespace Project0
                     {
                         Console.WriteLine("OrderPlaced");
                         User_CurrCustomerId = "";
+                        User_CurrLocationId = "";
                         UserInput = "MainMenu";
                     }
                     else if (UserInput == "xcx")
                     {
                         UserInput = "MainMenu";
-                        customerDB[User_CurrCustomerId].CustomerCart.Products.Clear();
+                        customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.RemoveAllItems(customerDB[User_CurrCustomerId].CustomerCart.Products);
+                        
                     }
 
                     //return to order menu

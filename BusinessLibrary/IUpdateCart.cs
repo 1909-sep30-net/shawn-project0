@@ -6,5 +6,6 @@ namespace BusinessLibrary
     {
         void AddItem(List<ICartItem> Products, IProduct product, int quantity);
         void RemoveItem(List<ICartItem> Products, IProduct product, int quantity);
+        void RemoveAllItems(List<ICartItem> Products);
     }
 }

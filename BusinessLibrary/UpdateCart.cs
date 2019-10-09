@@ -58,6 +58,11 @@ namespace BusinessLibrary
             }
         }
 
+        public void RemoveAllItems(List<ICartItem> Products)
+        {
+            Products.Clear();
+        }
+
         public void RemoveItem(List<ICartItem> Products, IProduct product, int quantity)
         {
             foreach (var cartItem in Products)

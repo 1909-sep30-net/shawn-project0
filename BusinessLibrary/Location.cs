@@ -13,6 +13,7 @@ namespace BusinessLibrary
         Location(int locationId)
         {
             this.LocationId = locationId;
+
         }
     }
 }
