@@ -74,6 +74,24 @@ namespace Data
 
         }
 
+        //public static Dictionary<string, Dictionary<string, Product>> GetMoreProducts()
+        //{
+        //    //Temporary product data
+        //    var jsonFilePath = @"C:\revature\shawn-project0\Data\productDataLocation.json";
+
+        //    try
+        //    {
+        //        var ProductsDictionary = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Product>>>(File.ReadAllText(jsonFilePath));
+        //        return ProductsDictionary;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("Something went wrong with product data: " + ex.Message.ToString());
+        //    }
+        //    return null;
+
+        //}
+
         public static void SaveProducts(Dictionary<string, Dictionary<string, Product>> productDb)
         {
             //Temporary customer data

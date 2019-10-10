@@ -44,5 +44,23 @@ namespace BusinessLibrary
                 Console.WriteLine("========================");
         }
 
+        public static void AllStockAtLocation(Dictionary<string, Product> stock, string store)
+        {
+            Console.WriteLine("========================");
+            Console.WriteLine($"Store location {store}");
+            Console.WriteLine($"  Id : {store}");
+            Console.WriteLine("----------------------");
+            foreach (var item in stock)
+            {
+
+                Console.WriteLine($"Item : {item.Value.ProductName}");
+                Console.WriteLine($"Desc : {item.Value.ProductDesc}");
+                Console.WriteLine($"IdNo : {item.Value.ProductId}");
+                Console.WriteLine($" Qty : {item.Value.StockQuantity}");
+                Console.WriteLine("----------------------");
+            }
+            Console.WriteLine("========================");
+        }
+
     }
 }

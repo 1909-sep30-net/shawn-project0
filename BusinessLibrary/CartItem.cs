@@ -8,12 +8,5 @@ namespace BusinessLibrary
     {
         public int ProductQuantinty { get; set; }
         public IProduct Product { get; set; }
-
-
-
-        public void WriteSomething()
-        {
-            Console.WriteLine(ProductQuantinty);
-        }
     }
 }

@@ -6,14 +6,21 @@ namespace BusinessLibrary
 {
     public class Location
     {
-        public int LocationId { get; }
+        public string LocationId { get; set; }
 
-        public List<ICartItem> Products { get; set; }
+        public Dictionary<string, Product> Stock { get; set; }
 
-        Location(int locationId)
+        public Location(string locationId, Dictionary<string, Product> stock)
         {
             this.LocationId = locationId;
+            this.Stock = stock;
+        }
+
+        public void GetInvetory()
+        {
+            MessageHandler.AllStockAtLocation(Stock, LocationId);
 
         }
+
     }
 }

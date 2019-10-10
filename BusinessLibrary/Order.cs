@@ -12,7 +12,7 @@ namespace BusinessLibrary
         List<ICartItem> Products { get; set; }
         DateTime OrderTime { get; set; }
 
-
+        
         Order(string customerId, string storeId, List<ICartItem> products, DateTime orderDate)
         {
             this.OrderId = Guid.NewGuid().ToString();
@@ -20,6 +20,7 @@ namespace BusinessLibrary
             this.StoreId = storeId;
             this.Products = products;
             this.OrderTime = DateTime.Now;
+            
         }
 
         public Dictionary<string, string> OrderLogIds = new Dictionary<string, string>();
@@ -28,6 +29,7 @@ namespace BusinessLibrary
         public Dictionary<string, string> GenerateOrderLogIds()
         {
             OrderLogIds.Add("OrderId", OrderId);
+
             OrderLogIds.Add("CustomerId", CustomerId);
             OrderLogIds.Add("StoreId", StoreId);
             OrderLogIds.Add("OrderTime", OrderTime.ToString());

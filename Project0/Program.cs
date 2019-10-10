@@ -16,6 +16,12 @@ namespace Project0
             //temp data
             var customerDB = CustomerDataHandler.GetCustomers();
             var productDB = CustomerDataHandler.GetMoreProducts();
+            Dictionary<string, Location> locationDB = new Dictionary<string, Location>();
+                foreach (var store in productDB)
+                {
+                var newStore = new Location(store.Key, store.Value);
+                locationDB.Add(store.Key, newStore);
+                }
             //var stufftoorder = new List<ICartItem>();
 
             //var ordersomething = new CustomerOrder("2131afca - 7588 - 479e-84f5 - d3a1ff255b40", "001", stufftoorder, productDB);
@@ -42,6 +48,7 @@ namespace Project0
                 }
                 else if (UserInput == "a") 
                 {
+                    Console.Clear();
                     Console.WriteLine("Add new customer...");
                     Console.WriteLine("Enter first name of new customer :");
                     var User_NameFirst = Console.ReadLine();
@@ -69,6 +76,7 @@ namespace Project0
                 }
                 else if (UserInput == "o")
                 {
+                    Console.Clear();
                     if (User_CurrCustomerId == "")
                     {
                         Console.WriteLine("Enter CustomerId : ");
@@ -76,7 +84,7 @@ namespace Project0
                                                 
                     }
 
-                    if (!ValidationHandler.CheckCustomerId(User_CurrCustomerId, customerDB))//!customerDB.ContainsKey(User_CurrCustomerId))
+                    if (!ValidationHandler.CheckCustomerId(User_CurrCustomerId, customerDB))
                     {
                         User_CurrCustomerId = "";
                         UserInput = "o";
@@ -96,6 +104,7 @@ namespace Project0
                             Console.WriteLine("A => Add product");
                             Console.WriteLine("R => Remove product");
                             Console.WriteLine("V => View current order");
+                            Console.WriteLine("I => View store invetory");
                             Console.WriteLine("P => Place order");
                             Console.WriteLine("XCX => Cancel order");
                             UserInput = Console.ReadLine().ToLower();
@@ -146,6 +155,16 @@ namespace Project0
                     {
                         customerDB[User_CurrCustomerId].CustomerCart.InvetoryItems();
                     }
+                    else if (UserInput == "i")
+                    {
+                        Console.WriteLine("store invetory...");
+                        //foreach (var cartitem in productDB[User_CurrLocationId])
+                        //{
+                        //    Console.WriteLine(cartitem.Value.ProductName);
+                        //}
+                        locationDB[User_CurrLocationId].GetInvetory();
+
+                    }
                     else if (UserInput == "p")
                     {
                         //SaveProducts(Dictionary<string, Dictionary<string, Product>> productDb)
@@ -165,7 +184,8 @@ namespace Project0
                     {
                         UserInput = "MainMenu";
                         customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.RemoveAllItems(customerDB[User_CurrCustomerId].CustomerCart.Products);
-                        
+                        User_CurrLocationId = "";
+                        User_CurrCustomerId = "";
                     }
 
                     //return to order menu
