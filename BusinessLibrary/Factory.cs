@@ -36,7 +36,10 @@ namespace BusinessLibrary
             return new UpdateCart();
         }
 
-        .
+        public static Dictionary<string, Dictionary<string, string>> CreateOrderLog()
+        {
+            return new Dictionary<string, Dictionary<string,string>>();
+        }
 
     }
 

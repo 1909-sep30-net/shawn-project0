@@ -22,6 +22,8 @@ namespace Project0
                 var newStore = new Location(store.Key, store.Value);
                 locationDB.Add(store.Key, newStore);
                 }
+            var orderHistoryDB = CustomerDataHandler.GetOrderLog();
+
             //var stufftoorder = new List<ICartItem>();
 
             //var ordersomething = new CustomerOrder("2131afca - 7588 - 479e-84f5 - d3a1ff255b40", "001", stufftoorder, productDB);
@@ -171,10 +173,14 @@ namespace Project0
                         var PlaceOrder = new CustomerOrder(User_CurrCustomerId, User_CurrLocationId, customerDB[User_CurrCustomerId].CustomerCart.Products, productDB);
                         CustomerDataHandler.SaveProducts(PlaceOrder.UpdateLocationStock());
 
-                        //put history loggers here
-
-
-
+                        //history log
+                        var OrderLog = new Order(User_CurrCustomerId, User_CurrLocationId, customerDB[User_CurrCustomerId].CustomerCart.Products);
+                        foreach(var order in OrderLog.OrderLog)
+                        {
+                            orderHistoryDB.Add(order.Key, order.Value);
+                        }
+                        CustomerDataHandler.SaveOrderLog(orderHistoryDB);
+                        
                         Console.WriteLine("OrderPlaced");
                         User_CurrCustomerId = "";
                         User_CurrLocationId = "";

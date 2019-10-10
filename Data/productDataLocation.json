@@ -5,14 +5,14 @@
     "cd9eefc1-70d1-40e7-9de3-d3b4462f3961": {
       "$id": "3",
       "ProductId": "cd9eefc1-70d1-40e7-9de3-d3b4462f3961",
-      "StockQuantity": 15,
+      "StockQuantity": 8,
       "ProductName": "Banana Bike",
       "ProductDesc": "Yellow banana bike"
     },
     "cd9eefc1-70d1-40e7-9de3-d3b4462f3962": {
       "$id": "4",
       "ProductId": "cd9eefc1-70d1-40e7-9de3-d3b4462f3962",
-      "StockQuantity": 20,
+      "StockQuantity": 19,
       "ProductName": "Moms Banana Bread",
       "ProductDesc": "Old bananas, fresh bread"
     }

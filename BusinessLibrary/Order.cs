@@ -9,39 +9,42 @@ namespace BusinessLibrary
         string OrderId { get; set; }
         string StoreId { get; set; }
         string CustomerId { get; set; }
-        List<ICartItem> Products { get; set; }
+        Dictionary<string, Dictionary<string,string>> OrderedProducts { get; set; }
         DateTime OrderTime { get; set; }
+        public Dictionary<string, string> CartFormattedOrder { get; private set; }
+        public Dictionary<string, Dictionary<string, string>> OrderLog { get; set; }
 
-        
-        Order(string customerId, string storeId, List<ICartItem> products, DateTime orderDate)
+        public Order(string customerId, string storeId, List<ICartItem> products)
         {
             this.OrderId = Guid.NewGuid().ToString();
             this.CustomerId = customerId;
             this.StoreId = storeId;
-            this.Products = products;
             this.OrderTime = DateTime.Now;
-            
-        }
 
-        public Dictionary<string, string> OrderLogIds = new Dictionary<string, string>();
+            //changing StockQuantity to match ProductQuantity;
+            foreach ( ICartItem item in products)
+            {
+                item.Product.StockQuantity = item.ProductQuantinty;
+            }
 
+            var CartFormattedOrder = new Dictionary<string, string>();
 
-        public Dictionary<string, string> GenerateOrderLogIds()
-        {
-            OrderLogIds.Add("OrderId", OrderId);
+            foreach (ICartItem item in products)
+            {
+                CartFormattedOrder.Add("OrderId", OrderId);
+                CartFormattedOrder.Add("CustomerId", CustomerId);
+                CartFormattedOrder.Add("StoreId", StoreId);
+                CartFormattedOrder.Add("ProductId", item.Product.ProductId);
+                CartFormattedOrder.Add("ProductName", item.Product.ProductName);
+                CartFormattedOrder.Add("ProductDesc", item.Product.ProductDesc);
+                CartFormattedOrder.Add("Qty", item.Product.StockQuantity.ToString());
+                CartFormattedOrder.Add("OrderTime", OrderTime.ToString());
+            }
 
-            OrderLogIds.Add("CustomerId", CustomerId);
-            OrderLogIds.Add("StoreId", StoreId);
-            OrderLogIds.Add("OrderTime", OrderTime.ToString());
-            return OrderLogIds;
-        }
+            this.OrderLog = new Dictionary<string, Dictionary<string, string>>();
+            OrderLog.Add(OrderId, CartFormattedOrder);
 
-        public Dictionary<string, List<ICartItem>> OrderLogProducts = new Dictionary<string, List<ICartItem>>();
-        public Dictionary<string, List<ICartItem>> GenerateOrderLogProducts()
-        {
-            OrderLogProducts.Add(OrderId, Products);
-            return OrderLogProducts;
-        }
+        }        
     }
 
 }

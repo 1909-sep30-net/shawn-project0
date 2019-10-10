@@ -74,24 +74,6 @@ namespace Data
 
         }
 
-        //public static Dictionary<string, Dictionary<string, Product>> GetMoreProducts()
-        //{
-        //    //Temporary product data
-        //    var jsonFilePath = @"C:\revature\shawn-project0\Data\productDataLocation.json";
-
-        //    try
-        //    {
-        //        var ProductsDictionary = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, Product>>>(File.ReadAllText(jsonFilePath));
-        //        return ProductsDictionary;
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("Something went wrong with product data: " + ex.Message.ToString());
-        //    }
-        //    return null;
-
-        //}
-
         public static void SaveProducts(Dictionary<string, Dictionary<string, Product>> productDb)
         {
             //Temporary customer data
@@ -112,11 +94,11 @@ namespace Data
             }
         }
 
-        public static void SaveOrderLogIds(Dictionary<string, Dictionary<string, Product>> productDb)
+        public static void SaveOrderLog(Dictionary<string, Dictionary<string, string>> orderhistory)
         {
             //Temporary customer data
             var jsonFilePath = @"C:\revature\shawn-project0\Data\orderLogIds.json";
-            string jsonProductDb = JsonConvert.SerializeObject(productDb, new JsonSerializerSettings()
+            string jsonHistoryDb = JsonConvert.SerializeObject(orderhistory, new JsonSerializerSettings()
             {
                 Formatting = Formatting.Indented,
                 PreserveReferencesHandling = PreserveReferencesHandling.Objects
@@ -124,15 +106,31 @@ namespace Data
 
             try
             {
-                File.WriteAllText(jsonFilePath, jsonProductDb);
+                File.WriteAllText(jsonFilePath, jsonHistoryDb);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Something went wrong with saving product stock data: " + ex.Message.ToString());
+                Console.WriteLine("Something went wrong with saving order log history data: " + ex.Message.ToString());
             }
         }
 
+        public static Dictionary<string, Dictionary<string, string>> GetOrderLog()
+        {
+            //Temporary customer data
+            var jsonFilePath = @"C:\revature\shawn-project0\Data\orderLogIds.json";
 
+            try
+            {
+                var OrderHistoryLog = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, string>>>(File.ReadAllText(jsonFilePath));
+                return OrderHistoryLog;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Something went wrong with retrieving Order History data: " + ex.Message.ToString());
+            }
+            return null;
+
+        }
 
     }
 
