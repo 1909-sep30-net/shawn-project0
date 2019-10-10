@@ -23,13 +23,7 @@ namespace Project0
                 locationDB.Add(store.Key, newStore);
                 }
             var orderHistoryDB = CustomerDataHandler.GetOrderLog();
-
-            //var stufftoorder = new List<ICartItem>();
-
-            //var ordersomething = new CustomerOrder("2131afca - 7588 - 479e-84f5 - d3a1ff255b40", "001", stufftoorder, productDB);
-
-            //ordersomething.PlaceOrder();
-
+            
             //begin temp UI
             var UserInput = "MainMenu";
             string User_CurrCustomerId = "";
@@ -50,7 +44,6 @@ namespace Project0
                 }
                 else if (UserInput == "a") 
                 {
-                    Console.Clear();
                     Console.WriteLine("Add new customer...");
                     Console.WriteLine("Enter first name of new customer :");
                     var User_NameFirst = Console.ReadLine();
@@ -71,14 +64,62 @@ namespace Project0
                 else if (UserInput == "c")
                 {
                     Console.WriteLine("customer history...");
+
+
+                    if (User_CurrCustomerId == "")
+                    {
+                        Console.WriteLine("Enter CustomerId : ");
+                        User_CurrCustomerId = Console.ReadLine();
+
+                    }
+
+                    if (!ValidationHandler.CheckCustomerId(User_CurrCustomerId, customerDB))
+                    {
+                        User_CurrCustomerId = "";
+                        UserInput = "c";
+                        Console.WriteLine("Invalid Customer Id.");
+                    }
+                    else
+                    {
+
+
+                        var HistoryHandler = Factory.CreateHistoryHandler();
+                        HistoryHandler.Database = orderHistoryDB;
+                        HistoryHandler.TargetId = User_CurrCustomerId;
+                        HistoryHandler.RetrievalType = "CustomerId";
+                        HistoryHandler.GetHistory();
+
+                        UserInput = "MainMenu";
+
+                    }
+
                 }
                 else if (UserInput == "s")
                 {
                     Console.WriteLine("store history...");
+                    Console.WriteLine("Enter LocationId : ");
+
+                    User_CurrLocationId = Console.ReadLine(); 
+                    if (!ValidationHandler.CheckLocationId(User_CurrLocationId, productDB))
+                    {
+                        Console.WriteLine("Invalid Location Id");
+                        User_CurrLocationId = "";
+                        UserInput = "s";
+                    }
+                    else
+                    {
+                        
+                        var HistoryHandler = Factory.CreateHistoryHandler();
+                        HistoryHandler.Database = orderHistoryDB;
+                        HistoryHandler.TargetId = User_CurrLocationId;
+                        HistoryHandler.RetrievalType = "StoreId";
+
+                        HistoryHandler.GetHistory();
+                    }
+
                 }
                 else if (UserInput == "o")
                 {
-                    Console.Clear();
                     if (User_CurrCustomerId == "")
                     {
                         Console.WriteLine("Enter CustomerId : ");

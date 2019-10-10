@@ -62,5 +62,20 @@ namespace BusinessLibrary
             Console.WriteLine("========================");
         }
 
+        public static void ShowOrderHistory(Dictionary<string, string> order)
+        {
+            Console.WriteLine("========================");
+            Console.WriteLine($"Customer Id : {order["CustomerId"]}");
+            Console.WriteLine($"   Order Id : {order["OrderId"]}");
+            Console.WriteLine($"  ProductId : {order["ProductId"]}");
+            Console.WriteLine($"ProductName : {order["ProductName"]}");
+            Console.WriteLine($"ProductDesc : {order["ProductDesc"]}");
+            Console.WriteLine($"Qty ordered : {order["Qty"]}");
+            Console.WriteLine($"Location Id : {order["StoreId"]}");
+            Console.WriteLine($" Order Date : {order["OrderTime"]}");
+            Console.WriteLine("========================");
+
+        }
+
     }
 }

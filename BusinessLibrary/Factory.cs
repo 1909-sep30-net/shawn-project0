@@ -41,6 +41,11 @@ namespace BusinessLibrary
             return new Dictionary<string, Dictionary<string,string>>();
         }
 
+        public static HistoryHandler CreateHistoryHandler()
+        {
+            return new HistoryHandler();
+        }
+
     }
 
 }
