@@ -12,14 +12,15 @@ namespace BusinessLibrary
 
         public void GetHistory()
         {
+            var HistoryMatchList = new List<Dictionary<string, string>>();
             foreach (var record in Database)
-            {
+
                 if (record.Value[RetrievalType] == TargetId)
                 {
-                    MessageHandler.ShowOrderHistory(record.Value);
+                    HistoryMatchList.Add(record.Value);
                 }
 
-            }
+            MessageHandler.ShowOrderHistory(HistoryMatchList, RetrievalType, TargetId);
         }
     }
 }

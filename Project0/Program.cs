@@ -41,6 +41,7 @@ namespace Project0
 
                     UserInput = Console.ReadLine().ToLower();
 
+                    //Console.Clear();
                 }
                 else if (UserInput == "a") 
                 {
@@ -87,10 +88,11 @@ namespace Project0
                         HistoryHandler.Database = orderHistoryDB;
                         HistoryHandler.TargetId = User_CurrCustomerId;
                         HistoryHandler.RetrievalType = "CustomerId";
+                        Console.Clear();
                         HistoryHandler.GetHistory();
 
+                        User_CurrCustomerId = "";
                         UserInput = "MainMenu";
-
                     }
 
                 }
@@ -113,8 +115,11 @@ namespace Project0
                         HistoryHandler.Database = orderHistoryDB;
                         HistoryHandler.TargetId = User_CurrLocationId;
                         HistoryHandler.RetrievalType = "StoreId";
-
+                        Console.Clear();
                         HistoryHandler.GetHistory();
+
+                        User_CurrLocationId = "";
+                        UserInput = "MainMenu";
                     }
 
                 }

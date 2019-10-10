@@ -62,19 +62,24 @@ namespace BusinessLibrary
             Console.WriteLine("========================");
         }
 
-        public static void ShowOrderHistory(Dictionary<string, string> order)
+        public static void ShowOrderHistory(List<Dictionary<string, string>> order, string type, string id)
         {
+            Console.WriteLine("History of all orders");
+            Console.WriteLine($"{type} : {id}");
             Console.WriteLine("========================");
-            Console.WriteLine($"Customer Id : {order["CustomerId"]}");
-            Console.WriteLine($"   Order Id : {order["OrderId"]}");
-            Console.WriteLine($"  ProductId : {order["ProductId"]}");
-            Console.WriteLine($"ProductName : {order["ProductName"]}");
-            Console.WriteLine($"ProductDesc : {order["ProductDesc"]}");
-            Console.WriteLine($"Qty ordered : {order["Qty"]}");
-            Console.WriteLine($"Location Id : {order["StoreId"]}");
-            Console.WriteLine($" Order Date : {order["OrderTime"]}");
-            Console.WriteLine("========================");
-
+            foreach (var line in order)
+            {
+                Console.WriteLine("========================");
+                Console.WriteLine($"Customer Id : {line["CustomerId"]}");
+                Console.WriteLine($"   Order Id : {line["OrderId"]}");
+                Console.WriteLine($"  ProductId : {line["ProductId"]}");
+                Console.WriteLine($"ProductName : {line["ProductName"]}");
+                Console.WriteLine($"ProductDesc : {line["ProductDesc"]}");
+                Console.WriteLine($"Qty ordered : {line["Qty"]}");
+                Console.WriteLine($"Location Id : {line["StoreId"]}");
+                Console.WriteLine($" Order Date : {line["OrderTime"]}");
+                Console.WriteLine("========================");
+            }
         }
 
     }
