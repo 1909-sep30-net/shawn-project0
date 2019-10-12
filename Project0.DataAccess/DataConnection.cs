@@ -36,7 +36,7 @@ namespace Project0.DataAccess
             NewCustomer.LastName = lastName;
 
             db.Add(NewCustomer);
-
+            
             try
             {
                 db.SaveChanges();
@@ -53,6 +53,61 @@ namespace Project0.DataAccess
             return NewCustomer;
         }
 
+        //Retrieval Methods
+        // Validation - Customer
+        public static bool ValidateCustomerId(string userInput)
+        {
+            DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
+                .UseSqlServer(SecretConfiguration.SecretString)
+                .Options;
+            var db = new project0Context(options);
+
+            
+            var Results = db.Customers.Where(n => n.CustomerId.ToString().Contains(userInput));
+            if (Results.Count() == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        //Retrieval Methods
+        // Validation - ProductID
+        public static bool ValidateProductId(string userInput)
+        {
+            DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
+                .UseSqlServer(SecretConfiguration.SecretString)
+                .Options;
+            var db = new project0Context(options);
+
+
+            var Results = db.Products.Where(n => n.ProductId.ToString().Contains(userInput));
+            if (Results.Count() == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        //Retrieval Methods
+        // Validation - LocationId
+        public static bool ValidateLocationId(string userInput)
+        {
+            DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
+                .UseSqlServer(SecretConfiguration.SecretString)
+                .Options;
+            var db = new project0Context(options);
+
+
+            var Results = db.Locations.Where(n => n.LocationId.ToString().Contains(userInput));
+            if (Results.Count() == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
         // Retrieveal Methods
         // Customers
         public IEnumerable<Customers> GetAllCustomers()
@@ -65,24 +120,40 @@ namespace Project0.DataAccess
             return customers;
         }
 
-        public IEnumerable<Customers> GetASingleCustomer(string userId)
+        public Customers GetASingleCustomer(string userId)
         {
+            Console.WriteLine("Searching by Id...");
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
                 .UseSqlServer(SecretConfiguration.SecretString)
                 .Options;
             var db = new project0Context(options);
-                IQueryable<Customers> customers = db.Customers.Where(n => n.CustomerId.ToString().Contains(userId));
-                return customers;
+            IEnumerable<Customers> customers = db.Customers.Where(n => n.CustomerId.ToString().Contains(userId));
+            return SingleCustomerHandler(customers);
         }
 
-        public IEnumerable<Customers> GetASingleCustomer(string firstName, string lastName)
+        public Customers GetASingleCustomer(string firstName, string lastName)
         {
+            Console.WriteLine("Searching by Name...");
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
                 .UseSqlServer(SecretConfiguration.SecretString)
                 .Options;
             var db = new project0Context(options);
-            IQueryable<Customers> customers = db.Customers.Where(n => n.FirstName.Contains(firstName) && n.LastName.Contains(lastName));
-            return customers;
+            IEnumerable<Customers> customers = db.Customers.Where(n => n.FirstName.Contains(firstName) && n.LastName.Contains(lastName));
+            Console.WriteLine(customers.Count() + " records found.");
+            return SingleCustomerHandler(customers);
+        }
+
+        public Customers SingleCustomerHandler(IEnumerable<Customers> customerQuery)
+        {
+            var CustomerResult = new Customers();
+            foreach (var customer in customerQuery)
+            {
+                CustomerResult.CustomerId = customer.CustomerId;
+                CustomerResult.FirstName = customer.FirstName;
+                CustomerResult.LastName = customer.LastName;
+            }
+
+            return CustomerResult;
         }
 
         // Retrieval Methods
@@ -118,12 +189,12 @@ namespace Project0.DataAccess
                             join pd in db.Products on od.ProductId equals pd.ProductId
                             join cd in db.Customers on o.CustomerId equals cd.CustomerId
                             join ld in db.Locations on o.LocationId equals ld.LocationId
-                            select new OrderHistory(o.OrderId, o.CustomerId, cd.FirstName, cd.LastName, o.LocationId, ld.LocationName, od.ProductId, pd.ProductName, pd.ProductDesc, od.Quantity);
+                            select new OrderHistory(o.OrderId, o.CustomerId, cd.FirstName, cd.LastName, o.LocationId, ld.LocationName, od.ProductId, pd.ProductName, pd.ProductDesc, od.Quantity, o.OrderDate);
             return AllOrders;
         }
 
         // Retrieval Methods
-        // Get all History of custmer or store
+        // Get all History of custmer
         public IEnumerable<OrderHistory> GetOrderHistory(string customerId)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -137,12 +208,12 @@ namespace Project0.DataAccess
                             join pd in db.Products on od.ProductId equals pd.ProductId
                             join cd in db.Customers on o.CustomerId equals cd.CustomerId
                             join ld in db.Locations on o.LocationId equals ld.LocationId
-                            select new OrderHistory(o.OrderId, o.CustomerId, cd.FirstName, cd.LastName, o.LocationId, ld.LocationName, od.ProductId, pd.ProductName, pd.ProductDesc, od.Quantity);
+                            select new OrderHistory(o.OrderId, o.CustomerId, cd.FirstName, cd.LastName, o.LocationId, ld.LocationName, od.ProductId, pd.ProductName, pd.ProductDesc, od.Quantity, o.OrderDate);
             return AllOrders;
         }
 
         //Retrieval
-        // Get all History of customer or store
+        // Get all History of store
 
         public IEnumerable<OrderHistory> GetOrderHistory(int locationId)
         {
@@ -157,7 +228,7 @@ namespace Project0.DataAccess
                             join pd in db.Products on od.ProductId equals pd.ProductId
                             join cd in db.Customers on o.CustomerId equals cd.CustomerId
                             join ld in db.Locations on o.LocationId equals ld.LocationId
-                            select new OrderHistory(o.OrderId, o.CustomerId, cd.FirstName, cd.LastName, o.LocationId, ld.LocationName, od.ProductId, pd.ProductName, pd.ProductDesc, od.Quantity);
+                            select new OrderHistory(o.OrderId, o.CustomerId, cd.FirstName, cd.LastName, o.LocationId, ld.LocationName, od.ProductId, pd.ProductName, pd.ProductDesc, od.Quantity, o.OrderDate);
             return AllOrders;
         }
 
