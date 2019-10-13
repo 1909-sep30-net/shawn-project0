@@ -16,7 +16,6 @@ namespace Project0.Library
         public Guid CustomerId { get; set; }
         public int? LocationId { get; set; }
         public DateTime OrderDate { get; set; }
-        public IUpdateCart UpdateCart { get; set; }
 
         public Cart()
         {

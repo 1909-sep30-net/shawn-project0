@@ -241,7 +241,7 @@ namespace Project0.DataAccess
 
         // Retrieval Methods
         // Get all History of custmer
-        public IEnumerable<OrderHistory> GetOrderHistory(string customerId)
+        public IEnumerable<Orders> GetOrderHistory(string customerId)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
                 .UseSqlServer(SecretConfiguration.SecretString)
@@ -250,18 +250,15 @@ namespace Project0.DataAccess
 
             var AllOrders = from o in db.Orders
                             where (o.CustomerId.ToString() == customerId)
-                            join od in db.OrderItems on o.OrderId equals od.OrderId
-                            join pd in db.Products on od.ProductId equals pd.ProductId
-                            join cd in db.Customers on o.CustomerId equals cd.CustomerId
-                            join ld in db.Locations on o.LocationId equals ld.LocationId
-                            select new OrderHistory(o.OrderId, o.CustomerId, cd.FirstName, cd.LastName, o.LocationId, ld.LocationName, od.ProductId, pd.ProductName, pd.ProductDesc, od.Quantity, o.OrderDate);
+                            select o;
+                            
             return AllOrders;
         }
 
         //Retrieval
         // Get all History of store
 
-        public IEnumerable<OrderHistory> GetOrderHistory(int locationId)
+        public IEnumerable<Orders> GetOrderHistory(int? locationId)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
                 .UseSqlServer(SecretConfiguration.SecretString)
@@ -269,12 +266,8 @@ namespace Project0.DataAccess
             var db = new project0Context(options);
 
             var AllOrders = from o in db.Orders
-                            where (o.LocationId == locationId) //(n => n.CustomerId == customerId)
-                            join od in db.OrderItems on o.OrderId equals od.OrderId
-                            join pd in db.Products on od.ProductId equals pd.ProductId
-                            join cd in db.Customers on o.CustomerId equals cd.CustomerId
-                            join ld in db.Locations on o.LocationId equals ld.LocationId
-                            select new OrderHistory(o.OrderId, o.CustomerId, cd.FirstName, cd.LastName, o.LocationId, ld.LocationName, od.ProductId, pd.ProductName, pd.ProductDesc, od.Quantity, o.OrderDate);
+                            where (o.LocationId == locationId)
+                            select o;
             return AllOrders;
         }
 

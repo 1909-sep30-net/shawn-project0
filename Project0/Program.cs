@@ -16,14 +16,9 @@ namespace Project0
         {
 
             Console.WriteLine(FiggleFonts.SubZero.Render("Project Zero"));
-            Console.WriteLine(FiggleFonts.FireFontK.Render("The Banana Store Kiosk"));
+            Console.WriteLine("----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----");
+            Console.WriteLine(FiggleFonts.Short.Render("     Banana Store Kiosk"));
             Console.WriteLine("\tThe Banana Store Kiosk");
-
-            //var testUpdateStock = new DataConnection().UpdateLocationStock(Guid.Parse("4C992AA8-13E0-42DF-968D-5ECD08A8CBCB"), 10, 3);
-            //Console.WriteLine(testUpdateStock);
-
-            //var testCreateOrder = new DataConnection().CreateOrder(Guid.Parse("58e594d2-e54a-43d1-ac89-2c27e835a343"), Guid.Parse("518B9A19-BD55-4497-A01F-2E48F23D8D30"), 10, DateTime.Now);
-            //Console.WriteLine(testCreateOrder);
 
             // Ui init
             var UserInput = "MainMenu";
@@ -148,7 +143,7 @@ namespace Project0
                         Console.WriteLine("\t----- Customer Order History -----");
                         try
                         {
-                            Console.WriteLine($"\t{TargetedHistory.First().FirstName} {TargetedHistory.First().LastName}");
+                            //Console.WriteLine($"\t{TargetedHistory.First().FirstName} {TargetedHistory.First().LastName}");
                             foreach (var order in TargetedHistory)
                             {
                                 Console.WriteLine("\t========================");
@@ -157,11 +152,13 @@ namespace Project0
                                 Console.WriteLine("\t========================");
                             }
 
+                            Console.WriteLine("\t----- Order History Menu -----");
                             Console.WriteLine("\tD => See order details");
                             Console.WriteLine("\tM => Return to main menu");
                             Console.Write("\t ");
                             UserInput = Console.ReadLine().ToLower();
-                        } catch(InvalidOperationException ex)
+                        }
+                        catch (InvalidOperationException ex)
                         {
                             Console.WriteLine("\tThere are no orders for this customer yet.");
                             Console.WriteLine("\t----------");
@@ -184,22 +181,25 @@ namespace Project0
                                 Console.Write("\t ");
                                 User_OrderId = Console.ReadLine().ToLower();
                             }
-                            
+
                             var OrderDetails = new DataConnection().GetSingleOrder(User_OrderId);
-                            Console.WriteLine("\t----- Customer Order History -----");
-                            Console.WriteLine($"\t{OrderDetails.First().FirstName} {OrderDetails.First().LastName}");
-                            Console.WriteLine($"\tCustomer Id : {OrderDetails.First().CustomerId}");
-                            Console.WriteLine($"\t{OrderDetails.First().LocationName}");
-                            Console.WriteLine($"\tLocation Id: {OrderDetails.First().LocationId}");
+                            Console.WriteLine("\t----- Individual Order Details -----");
+                            Console.WriteLine($"\tCustomer Name : {OrderDetails.First().FirstName} {OrderDetails.First().LastName}");
+                            Console.WriteLine($"\t  Customer Id : {OrderDetails.First().CustomerId}");
+                            Console.WriteLine($"\tLocation Name :{OrderDetails.First().LocationName}");
+                            Console.WriteLine($"\t   Location Id: {OrderDetails.First().LocationId}");
                             foreach (var item in OrderDetails)
                             {
+                                Console.WriteLine("\t----------");
                                 Console.WriteLine($"\tProduct name : {item.ProductName}");
                                 Console.WriteLine($"\t Description : {item.ProductDesc}");
                                 Console.WriteLine($"\t  Product Id : {item.ProductId}");
                                 Console.WriteLine($"\t    Quantity : {item.Quantity}");
+                                Console.WriteLine("\t----------");
                             }
                             Console.WriteLine($"\t----------");
                             User_CurrCustomerId = "";
+                            User_CurrLocationId = "";
                             UserInput = "MainMenu";
                         }
                     }
@@ -220,14 +220,14 @@ namespace Project0
                     else
                     {
 
-                        Console.WriteLine("\tGetting history...");
+                        Console.WriteLine("\tGetting location order history...");
                         Console.Clear();
-                        var CompleteHistory = new DataConnection().GetOrderHistory(int.Parse(User_CurrLocationId));
+                        var CompleteHistory = new DataConnection().GetOrderHistory((int?)int.Parse(User_CurrLocationId));
                         var TargetedHistory = CompleteHistory.GroupBy(o => o.OrderId).Select(o => o.First());
 
                         Console.WriteLine("\t----- History of all orders -----");
-                        Console.WriteLine($"{TargetedHistory.First().LocationName}");
-                        Console.WriteLine($"Location Id : {TargetedHistory.First().LocationId}");
+                        //Console.WriteLine($"\t   Location : {TargetedHistory.First().LocationName}");
+                        Console.WriteLine($"\tLocation Id : {TargetedHistory.First().LocationId}");
                         foreach (var order in TargetedHistory)
                         {
                             Console.WriteLine("\t========================");
@@ -235,12 +235,51 @@ namespace Project0
                             Console.WriteLine($"\t Order Date : {order.OrderDate}");
                             Console.WriteLine("\t========================");
                         }
-
-
                         User_CurrCustomerId = "";
-                        UserInput = "MainMenu";
+                        User_CurrLocationId = "";
+                        Console.WriteLine("\t----- Order History Menu -----");
+                        Console.WriteLine("\tD => See order details");
+                        Console.WriteLine("\tM => Return to main menu");
+                        Console.Write("\t ");
+                        UserInput = Console.ReadLine().ToLower();
                     }
 
+                    if (UserInput == "m")
+                    {
+                        UserInput = "MainMenu";
+                    }
+                    else
+                    {
+                        var User_OrderId = "";
+
+                        while (!DataConnection.ValidateOrderId(User_OrderId))
+                        {
+                            Console.WriteLine("\tPlease enter a valid order id : ");
+                            Console.Write("\t ");
+                            User_OrderId = Console.ReadLine().ToLower();
+                        }
+
+                        var OrderDetails = new DataConnection().GetSingleOrder(User_OrderId);
+                        Console.WriteLine("\t----- Individual Order Details -----");
+                        Console.WriteLine($"\tCustomer Name : {OrderDetails.First().FirstName} {OrderDetails.First().LastName}");
+                        Console.WriteLine($"\t  Customer Id : {OrderDetails.First().CustomerId}");
+                        Console.WriteLine($"\tLocation Name :{OrderDetails.First().LocationName}");
+                        Console.WriteLine($"\t   Location Id: {OrderDetails.First().LocationId}");
+                        foreach (var item in OrderDetails)
+                        {
+                            Console.WriteLine("\t----------");
+                            Console.WriteLine($"\tProduct name : {item.ProductName}");
+                            Console.WriteLine($"\t Description : {item.ProductDesc}");
+                            Console.WriteLine($"\t  Product Id : {item.ProductId}");
+                            Console.WriteLine($"\t    Quantity : {item.Quantity}");
+                            Console.WriteLine("\t----------");
+                        }
+                        Console.WriteLine($"\t----------");
+                        User_CurrCustomerId = "";
+                        User_CurrLocationId = "";
+                        UserInput = "MainMenu";
+
+                    }
                 }
                 else if (UserInput == "o")
                 {
@@ -319,7 +358,7 @@ namespace Project0
                                 ProductId = Guid.Parse(User_CurrProductId),
                                 Quantity = intUser_ProductQuantity
                             });
-                            Console.WriteLine("Product added to cart...");
+                            Console.WriteLine("\tProduct added to cart...");
                             UserInput = "o";
 
                             User_CurrProductId = "";
@@ -375,15 +414,16 @@ namespace Project0
                             User_CurrLocationId = "";
                             UserInput = "MainMenu";
                             CurrentCart = new Cart();
-                        } else
+                        }
+                        else
                         {
-                            Console.WriteLine("If error persists please contact a supervisor.");
+                            Console.WriteLine("\tIf error persists please contact a supervisor.");
                             User_CurrCustomerId = "";
                             User_CurrLocationId = "";
                             UserInput = "MainMenu";
                             CurrentCart = new Cart();
                         }
-                        
+
                     }
                     else if (UserInput == "xcx")
                     {
@@ -395,7 +435,7 @@ namespace Project0
 
                     }
 
-                    
+
 
                     //return to order menu
                     if (UserInput != "MainMenu")
