@@ -15,9 +15,9 @@ namespace Project0
         static void Main(string[] args)
         {
 
-            Console.WriteLine(FiggleFonts.SubZero.Render("Project O"));
+            Console.WriteLine(FiggleFonts.SubZero.Render("Project Zero"));
             Console.WriteLine(FiggleFonts.FireFontK.Render("The Banana Store Kiosk"));
-            Console.WriteLine("The Banana Store Kiosk");
+            Console.WriteLine("\tThe Banana Store Kiosk");
 
             // Ui init
             var UserInput = "MainMenu";
@@ -25,6 +25,7 @@ namespace Project0
             string User_CurrLocationId = "";
             string User_FirstName = "";
             string User_LastName = "";
+            Cart CurrentCart = new Cart();
 
             while (true)
             {
@@ -52,17 +53,17 @@ namespace Project0
                     var NewCustomer = new DataConnection().CreateCustomer(User_FirstName, User_LastName);
 
 
-                    if (NewCustomer.CustomerId != null)
+                    if (!(string.IsNullOrEmpty(NewCustomer.FirstName) && string.IsNullOrEmpty(NewCustomer.LastName)))
                     {
                         Console.Clear();
-                        Console.WriteLine("Success!!");
-                        Console.WriteLine("New Customer Report:");
-                        Console.WriteLine($"Name: {NewCustomer.FirstName} {NewCustomer.LastName}");
-                        Console.WriteLine($"Customer Id: {NewCustomer.CustomerId}");
+                        Console.WriteLine("\tSuccess!!");
+                        Console.WriteLine("\tNew Customer Report:");
+                        Console.WriteLine($"\tName: {NewCustomer.FirstName} {NewCustomer.LastName}");
+                        Console.WriteLine($"\tCustomer Id: {NewCustomer.CustomerId}");
                     }
                     else
                     {
-                        Console.WriteLine("Please try again and if the problem persists, contact a supervisor.");
+                        Console.WriteLine("Creation Error! Please try again and if the problem persists, contact a supervisor.");
                     }
 
                     // Ui Init
@@ -83,34 +84,34 @@ namespace Project0
 
                     var SearchResults = new DataConnection().GetASingleCustomer(User_FirstName, User_LastName);
 
-                    if (SearchResults.CustomerId != null)
+                    if (!(string.IsNullOrEmpty(SearchResults.FirstName) && string.IsNullOrEmpty(SearchResults.LastName)))
                     {
                         Console.Clear();
-                        Console.WriteLine("Success!!");
-                        Console.WriteLine("New Customer Report:");
-                        Console.WriteLine($"Name: {SearchResults.FirstName} {SearchResults.LastName}");
-                        Console.WriteLine($"Customer Id: {SearchResults.CustomerId}");
-                        Console.WriteLine("----------");
+                        Console.WriteLine("\tSuccess!!");
+                        Console.WriteLine("\tNew Customer Report:");
+                        Console.WriteLine($"\tName: {SearchResults.FirstName} {SearchResults.LastName}");
+                        Console.WriteLine($"\tCustomer Id: {SearchResults.CustomerId}");
+                        Console.WriteLine("\t----------");
                         Console.WriteLine("X => Copy Customer Id to clipboard and return to main menu");
-                        Console.WriteLine("M => Return to mainmenu");
+                        Console.WriteLine("Any other key => Return to mainmenu with out copy");
                         UserInput = Console.ReadLine().ToLower();
                         if (UserInput == "x")
                         {
-                                TextCopy.Clipboard.SetText(SearchResults.CustomerId.ToString());
+                            TextCopy.Clipboard.SetText(SearchResults.CustomerId.ToString());
                         }
-
                         // Ui Init
                         UserInput = "MainMenu";
                         User_CurrCustomerId = "";
                         User_CurrLocationId = "";
                         User_FirstName = "";
                         User_LastName = "";
-
-
                     }
                     else
                     {
-                        Console.WriteLine("Please try again and if the problem persists, contact a supervisor.");
+                        Console.WriteLine("Customer does not exist in the database. Please try again and if the problem persists, contact a supervisor.");
+                        UserInput = "n";
+                        User_FirstName = "";
+                        User_LastName = "";
                     }
 
                 }
@@ -142,10 +143,10 @@ namespace Project0
                         Console.WriteLine($"{TargetedHistory.First().FirstName} {TargetedHistory.First().LastName}");
                         foreach (var order in TargetedHistory)
                         {
-                                Console.WriteLine("========================");
-                                Console.WriteLine($"   Order Id : {order.OrderId}");
-                                Console.WriteLine($" Order Date : {order.OrderDate}");
-                                Console.WriteLine("========================");
+                            Console.WriteLine("========================");
+                            Console.WriteLine($"   Order Id : {order.OrderId}");
+                            Console.WriteLine($" Order Date : {order.OrderDate}");
+                            Console.WriteLine("========================");
                         }
 
 
@@ -154,158 +155,193 @@ namespace Project0
                     }
 
                 }
-                //else if (UserInput == "s")
-                //{
-                //    Console.WriteLine("store history...");
-                //    Console.WriteLine("Enter LocationId : ");
+                else if (UserInput == "s")
+                {
+                    Console.WriteLine("Store history...");
+                    Console.WriteLine("Enter LocationId : ");
 
-                //    User_CurrLocationId = Console.ReadLine();
-                //    if (!ValidationHandler.CheckLocationId(User_CurrLocationId, productDB))
-                //    {
-                //        Console.WriteLine("Invalid Location Id");
-                //        User_CurrLocationId = "";
-                //        UserInput = "s";
-                //    }
-                //    else
-                //    {
+                    User_CurrLocationId = Console.ReadLine();
+                    if (!DataConnection.ValidateLocationId(User_CurrLocationId))
+                    {
+                        Console.WriteLine("Invalid Location Id, Please try again, if the promblem persists talk with a supervisor.");
+                        User_CurrLocationId = "";
+                        UserInput = "s";
+                    }
+                    else
+                    {
 
-                //        var HistoryHandler = Factory.CreateHistoryHandler();
-                //        HistoryHandler.Database = orderHistoryDB;
-                //        HistoryHandler.TargetId = User_CurrLocationId;
-                //        HistoryHandler.RetrievalType = "StoreId";
-                //        Console.Clear();
-                //        HistoryHandler.GetHistory();
+                        Console.WriteLine("Getting history...");
+                        Console.Clear();
+                        var CompleteHistory = new DataConnection().GetOrderHistory(int.Parse(User_CurrLocationId));
+                        var TargetedHistory = CompleteHistory.GroupBy(o => o.OrderId).Select(o => o.First());
 
-                //        User_CurrLocationId = "";
-                //        UserInput = "MainMenu";
-                //    }
+                        Console.WriteLine("History of all orders");
+                        Console.WriteLine($"{TargetedHistory.First().LocationName}");
+                        Console.WriteLine($"Location Id : {TargetedHistory.First().LocationId}");
+                        foreach (var order in TargetedHistory)
+                        {
+                            Console.WriteLine("========================");
+                            Console.WriteLine($"   Order Id : {order.OrderId}");
+                            Console.WriteLine($" Order Date : {order.OrderDate}");
+                            Console.WriteLine("========================");
+                        }
 
-                //}
-                //else if (UserInput == "o")
-                //{
-                //    if (User_CurrCustomerId == "")
-                //    {
-                //        Console.WriteLine("Enter CustomerId : ");
-                //        User_CurrCustomerId = Console.ReadLine();
 
-                //    }
+                        User_CurrCustomerId = "";
+                        UserInput = "MainMenu";
+                    }
 
-                //    if (!ValidationHandler.CheckCustomerId(User_CurrCustomerId, customerDB))
-                //    {
-                //        User_CurrCustomerId = "";
-                //        UserInput = "o";
-                //        Console.WriteLine("Invalid Customer Id.");
-                //    }
-                //    else
-                //    {
-                //        if (User_CurrLocationId == "")
-                //        {
-                //            Console.WriteLine("Enter LocationId : ");
-                //            User_CurrLocationId = Console.ReadLine();
-                //        }
+                }
+                else if (UserInput == "o")
+                {
 
-                //        if (ValidationHandler.CheckLocationId(User_CurrLocationId, productDB))
-                //        {
+                    while (!DataConnection.ValidateCustomerId(User_CurrCustomerId))
+                    {
+                        Console.WriteLine("Enter a valid CustomerId : ");
+                        User_CurrCustomerId = Console.ReadLine();
+                    };
 
-                //            Console.WriteLine("A => Add product");
-                //            Console.WriteLine("R => Remove product");
-                //            Console.WriteLine("V => View current order");
-                //            Console.WriteLine("I => View store invetory");
-                //            Console.WriteLine("P => Place order");
-                //            Console.WriteLine("XCX => Cancel order");
-                //            UserInput = Console.ReadLine().ToLower();
-                //        }
-                //        else
-                //        {
-                //            Console.WriteLine("Invalid Location Id");
-                //            User_CurrLocationId = "";
-                //            UserInput = "o";
-                //        }
-                //    }
+                    while (!DataConnection.ValidateLocationId(User_CurrLocationId))
+                    {
+                        Console.WriteLine("Enter a valid LocationId : ");
+                        User_CurrLocationId = Console.ReadLine();
+                    };
 
-                //    if (UserInput == "a")
-                //    {
 
-                //        Console.WriteLine("Enter ProductId : ");
-                //        var User_CurrProductId = Console.ReadLine();
+                    var User_CurrProductId = "";
+                    var User_ProductQuantity = "";
+                    int intUser_ProductQuantity;
 
-                //        if (ValidationHandler.CheckProductId(User_CurrProductId, productDB[User_CurrLocationId]))
-                //        {
-                //            Console.WriteLine("Enter Quantity : ");
-                //            int User_Quantity = Convert.ToInt32(Console.ReadLine());
-                //            customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.AddItem(customerDB[User_CurrCustomerId].CustomerCart.Products, productDB[User_CurrLocationId][User_CurrProductId], User_Quantity);
-                //        }
-                //        else
-                //        {
-                //            Console.WriteLine("Invalid Product Id");
-                //            UserInput = "a";
-                //        }
-                //    }
-                //    else if (UserInput == "r")
-                //    {
-                //        Console.WriteLine("Enter ProductId : ");
-                //        var User_CurrProductId = Console.ReadLine();
 
-                //        if (productDB[User_CurrLocationId].ContainsKey(User_CurrProductId))
-                //        {
-                //            Console.WriteLine("Enter Quantity : ");
-                //            int User_Quantity = Convert.ToInt32(Console.ReadLine());
-                //            customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.RemoveItem(customerDB[User_CurrCustomerId].CustomerCart.Products, productDB[User_CurrLocationId][User_CurrProductId], User_Quantity);
-                //        }
-                //        else
-                //        {
-                //            Console.WriteLine("Invalid Product Id");
-                //            UserInput = "a";
-                //        }
-                //    }
-                //    else if (UserInput == "v")
-                //    {
-                //        customerDB[User_CurrCustomerId].CustomerCart.InvetoryItems();
-                //    }
-                //    else if (UserInput == "i")
-                //    {
-                //        Console.WriteLine("store invetory...");
-                //        //foreach (var cartitem in productDB[User_CurrLocationId])
-                //        //{
-                //        //    Console.WriteLine(cartitem.Value.ProductName);
-                //        //}
-                //        locationDB[User_CurrLocationId].GetInvetory();
+                    Console.WriteLine("\t----- Order Menu -----");
+                    Console.WriteLine("\tA => Add product");
+                    Console.WriteLine("\tR => Remove product");
+                    Console.WriteLine("\tV => View current order");
+                    Console.WriteLine("\tI => View store invetory");
+                    Console.WriteLine("\tP => Place order");
+                    Console.WriteLine("\tXCX => Cancel order");
+                    UserInput = Console.ReadLine().ToLower();
 
-                //    }
-                //    else if (UserInput == "p")
-                //    {
-                //        //SaveProducts(Dictionary<string, Dictionary<string, Product>> productDb)
-                //        var PlaceOrder = new CustomerOrder(User_CurrCustomerId, User_CurrLocationId, customerDB[User_CurrCustomerId].CustomerCart.Products, productDB);
-                //        CustomerDataHandler.SaveProducts(PlaceOrder.UpdateLocationStock());
+                    if (UserInput == "i")
+                    {
 
-                //        //history log
-                //        var OrderLog = new Order(User_CurrCustomerId, User_CurrLocationId, customerDB[User_CurrCustomerId].CustomerCart.Products);
-                //        foreach (var order in OrderLog.OrderLog)
-                //        {
-                //            orderHistoryDB.Add(order.Key, order.Value);
-                //        }
-                //        CustomerDataHandler.SaveOrderLog(orderHistoryDB);
+                        var LocationInvetory = new DataConnection().GetLocationStock(int.Parse(User_CurrLocationId));
+                        Console.WriteLine(LocationInvetory);
 
-                //        Console.WriteLine("OrderPlaced");
-                //        User_CurrCustomerId = "";
-                //        User_CurrLocationId = "";
-                //        UserInput = "MainMenu";
-                //    }
-                //    else if (UserInput == "xcx")
-                //    {
-                //        UserInput = "MainMenu";
-                //        customerDB[User_CurrCustomerId].CustomerCart.UpdateCart.RemoveAllItems(customerDB[User_CurrCustomerId].CustomerCart.Products);
-                //        User_CurrLocationId = "";
-                //        User_CurrCustomerId = "";
-                //    }
+                        Console.WriteLine("Location Stock");
+                        Console.WriteLine($"{LocationInvetory.First().LocationName}");
+                        Console.WriteLine($"Location Id : {LocationInvetory.First().LocationId}");
+                        foreach (var order in LocationInvetory)
+                        {
+                            Console.WriteLine("========================");
+                            Console.WriteLine($"  Product : {order.ProductId}");
+                            Console.WriteLine($"     Desc : {order.ProductDesc}");
+                            Console.WriteLine($" Quantity : {order.Quantity}");
+                            Console.WriteLine("========================");
+                        }
+                        UserInput = "o";
 
-                //    //return to order menu
-                //    if (UserInput != "MainMenu")
-                //    {
-                //        UserInput = "o";
-                //    }
 
-            
+                    }
+                    else if (UserInput == "a")
+                    {
+
+                        do
+                        {
+                            Console.WriteLine("Please enter a valid ProductId : ");
+                            User_CurrProductId = Console.ReadLine();
+                        } while (!DataConnection.ValidateProductId(User_CurrProductId));
+
+                        do
+                        {
+                            Console.WriteLine("Please enter a valid quantity : ");
+                            User_ProductQuantity = Console.ReadLine();
+                        } while (!int.TryParse(User_ProductQuantity, out intUser_ProductQuantity));
+
+                        if (DataConnection.ValidateStock(int.Parse(User_CurrLocationId), User_CurrProductId, intUser_ProductQuantity, CurrentCart.InvetoryItems(Guid.Parse(User_CurrProductId))).Count() > 0)
+                        {
+
+                            CurrentCart.Add(new OrderItems()
+                            {
+                                OrderId = CurrentCart.OrderId,
+                                ProductId = Guid.Parse(User_CurrProductId),
+                                Quantity = intUser_ProductQuantity
+                            });
+                            Console.WriteLine("Added to Cart...");
+                            UserInput = "o";
+
+                            User_CurrProductId = "";
+                            User_ProductQuantity = "";
+                            intUser_ProductQuantity = 0;
+                        }
+                        else
+                        {
+                            Console.WriteLine($"The location you have selected does not have {User_ProductQuantity} of that item.");
+                            Console.WriteLine("Try a different location or reselect the product and choose less.");
+                            UserInput = "o";
+                        }
+
+                    }
+
+                    else if (UserInput == "r")
+                    {
+                        while (!DataConnection.ValidateProductId(User_CurrProductId))
+                        {
+                            Console.WriteLine("Enter ProductId : ");
+                            User_CurrProductId = Console.ReadLine();
+                        }
+
+                        CurrentCart.Remove(Guid.Parse(User_CurrProductId));
+
+
+                    }
+                    else if (UserInput == "v")
+                    {
+                        var ItemsInCart = CurrentCart.InvetoryItems();
+                        Console.WriteLine("Current Order Information");
+                        Console.WriteLine($"Customer Id : {User_CurrCustomerId}");
+                        Console.WriteLine($"Location Id : {User_CurrLocationId}");
+                        foreach (var order in ItemsInCart)
+                        {
+                            Console.WriteLine("========================");
+                            Console.WriteLine($"  Product : {order.ProductId}");
+                            Console.WriteLine($" Quantity : {order.Quantity}");
+                            Console.WriteLine("========================");
+                        }
+                        UserInput = "o";
+
+
+                    }
+                    else if (UserInput == "p")
+                    {
+                        
+                        //var OrderCart = new DataConnection()
+
+                        Console.WriteLine("OrderPlaced");
+                        User_CurrCustomerId = "";
+                        User_CurrLocationId = "";
+                        UserInput = "MainMenu";
+                        CurrentCart = new Cart();
+                    }
+                    else if (UserInput == "xcx")
+                    {
+                        UserInput = "MainMenu";
+                        CurrentCart = new Cart();
+                        User_CurrLocationId = "";
+                        User_CurrCustomerId = "";
+                        User_CurrProductId = "";
+
+                    }
+
+                    
+
+                    //return to order menu
+                    if (UserInput != "MainMenu")
+                    {
+                        UserInput = "o";
+
+                    }
+                }
                 else
                 {
                     Console.WriteLine("Invalid option selected, please try again:");

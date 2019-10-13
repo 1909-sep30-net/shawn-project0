@@ -4,9 +4,17 @@ using System.Text;
 
 namespace Project0.Library
 {
-    public class CartItem : ICartItem
+    public class CartItem
     {
         public int ProductQuantinty { get; set; }
-        public IProduct Product { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid OrderId { get; set; }
+
+        public CartItem(Guid orderId, Guid productId, int quantity)
+        {
+            OrderId = orderId;
+            ProductId = productId;
+            ProductQuantinty = quantity;
+        }
     }
 }

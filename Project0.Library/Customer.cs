@@ -17,7 +17,7 @@ namespace Project0.Library
         public Customer() 
         { 
             CustomerId = Guid.NewGuid().ToString();
-            CustomerCart = Factory.CreateCart(this);
+            //CustomerCart = Factory.CreateCart(this);
         }
 
     }

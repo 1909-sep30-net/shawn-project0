@@ -2,35 +2,76 @@
 using System.Collections.Generic;
 using System.Text;
 using Project0.Library;
+using Project0.DataAccess.Entities;
 
-/// <summary>
-/// Cart contains a list named Products containing of ICartItems.
-/// ICartItems is an object containing:
-///     a Product Object (Product Id, Product Name, Product Desc, Product Stock)
-///     Order amount (The amount the customer requested)
-///     
-/// Cart 
-/// </summary>
 
 namespace Project0.Library
 {
-    public class Cart : ICart
+    public class Cart
     {
-        public List<ICartItem> Products { get; set; }
-        public ICustomer Owner { get; set; }
+        public List<OrderItems> Products { get; set; }
+        public Guid OrderId { get; set; }
 
-        public IUpdateCart UpdateCart { get; }
+        public Guid CustomerId { get; set; }
+        public int LocationId { get; set; }
+        public DateTime OrderDate { get; set; }
+        public IUpdateCart UpdateCart { get; set; }
 
-        public Cart(ICustomer owner)
+        public Cart()
         {
-            Products = Factory.CreateCartItemList();
-            this.Owner = owner;
-            this.UpdateCart = Factory.CartHandler();
+            OrderId = Guid.NewGuid();
+            Products = new List<OrderItems>();
         }
 
-        public void InvetoryItems()
+        public List<OrderItems> InvetoryItems()
         {
-            MessageHandler.ItemsInCart(Products, Owner);
+            return Products;
+        }
+
+        public int? InvetoryItems(Guid productId)
+        {
+            foreach (var item in Products)
+            {
+                if (item.ProductId.Equals(productId))
+                {
+                    return item.Quantity;
+                }
+            }
+
+            return 0;
+        }
+
+        public void Add(OrderItems orderItem)
+        {
+            foreach (var item in Products)
+            {
+                if (item.ProductId == orderItem.ProductId)
+                {
+                    item.Quantity += orderItem.Quantity;
+                    return;
+                }
+            }
+
+            Products.Add(orderItem);
+
+        }
+
+        public bool Remove(Guid productId)
+        {
+            foreach (var item in Products)
+            {
+                if (item.ProductId.Equals(productId))
+                {
+                    Products.Remove(item);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool Order()
+        {
+            return true;
         }
 
     }

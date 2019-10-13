@@ -99,8 +99,13 @@ namespace Project0.DataAccess
                 .Options;
             var db = new project0Context(options);
 
+            int intuserInput;
+            if (!int.TryParse(userInput, out intuserInput))
+            {
+                return false;
+            }
 
-            var Results = db.Locations.Where(n => n.LocationId.ToString().Contains(userInput));
+            var Results = db.Locations.Where(n => n.LocationId == intuserInput);
             if (Results.Count() == 1)
             {
                 return true;
@@ -158,20 +163,39 @@ namespace Project0.DataAccess
 
         // Retrieval Methods
         // Store Invetory
-        public IEnumerable<LocationAndStockDesc> GetLocationStock(int locationId, string productId)
+        public IQueryable<LocationAndStockDesc> GetLocationStock(int locationid)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
                 .UseSqlServer(SecretConfiguration.SecretString)
                 .Options;
             var db = new project0Context(options);
-            IEnumerable<LocationStock> ProductsAtStore = db.LocationStock.Where(n => n.LocationId == locationId && n.ProductId.ToString().Contains(productId));
-            IEnumerable<Products> ProductsDetails = db.Products.Where(n => n.ProductId.ToString().Contains(productId));
-            var StockDescriptions = from ld in db.LocationStock
-                                    join pd in db.Products on ld.ProductId equals pd.ProductId
-                                    join ls in db.Locations on ld.LocationId equals ls.LocationId
-                                    select new LocationAndStockDesc(ld.LocationId, ls.LocationName, pd.ProductId, pd.ProductName, pd.ProductDesc, ld.Quantity);
 
-            return StockDescriptions;
+            var Invetory = from ls in db.LocationStock
+                           where ls.LocationId == locationid
+                           join pd in db.Products
+                           on ls.ProductId equals pd.ProductId
+                           join lc in db.Locations
+                           on ls.LocationId equals lc.LocationId
+                           select new LocationAndStockDesc( ls.LocationId, lc.LocationName, ls.ProductId, pd.ProductName, pd.ProductDesc, ls.Quantity );
+
+            return Invetory;
+        }
+
+        // See if there is enough of a product in stock at a location
+        public static IQueryable<LocationStock> ValidateStock(int locationId, string productId, int quantity, int? cartQuantity)
+        {
+            DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
+                .UseSqlServer(SecretConfiguration.SecretString)
+                .Options;
+            var db = new project0Context(options);
+
+            var Results = from ls in db.LocationStock
+                          where ls.LocationId == locationId && ls.ProductId.ToString().Equals(productId)
+                          where ls.Quantity >= (quantity + cartQuantity)
+            select ls;
+
+            return Results;
+
         }
 
         //Retrieval Methods

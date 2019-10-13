@@ -17,7 +17,7 @@ namespace Project0.Library
     ///     quantity is the amount of product you want removed from the cart.
     /// </summary>
 
-    public class UpdateCart : IUpdateCart
+    public class UpdateCart
     {
         public void AddItem(List<ICartItem> Products, IProduct product, int quantity)
         {
@@ -46,11 +46,11 @@ namespace Project0.Library
             // If item is not in cart, prepare a cart item and add it to products list
             if (quantity <= product.StockQuantity)
             {
-                ICartItem NewCartItem = Factory.CreateCartItem();
-                NewCartItem.Product = product;
-                NewCartItem.ProductQuantinty = quantity;
-                Products.Add(NewCartItem);
-                MessageHandler.SuccessfulAddition(product, quantity);
+                //ICartItem NewCartItem = Factory.CreateCartItem();
+                //NewCartItem.Product = product;
+                //NewCartItem.ProductQuantinty = quantity;
+                //Products.Add(NewCartItem);
+                //MessageHandler.SuccessfulAddition(product, quantity);
             }
             else
             {
