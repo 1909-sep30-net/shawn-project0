@@ -113,6 +113,28 @@ namespace Project0.DataAccess
             return false;
         }
 
+        //Retrieval Methods
+        // Validation - LocationId
+        public static bool ValidateOrderId(string userInput)
+        {
+            DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
+                .UseSqlServer(SecretConfiguration.SecretString)
+                .Options;
+            var db = new project0Context(options);
+            Guid guidUserInput;
+
+            if ( !Guid.TryParse(userInput, out guidUserInput) )
+            {
+                return false;
+            }
+            var Results = db.Orders.Where(n => n.OrderId.Equals(guidUserInput));
+            if (Results.Count() == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
         // Retrieveal Methods
         // Customers
         public IEnumerable<Customers> GetAllCustomers()
@@ -127,7 +149,7 @@ namespace Project0.DataAccess
 
         public Customers GetASingleCustomer(string userId)
         {
-            Console.WriteLine("Searching by Id...");
+            Console.WriteLine("\tSearching by Id...");
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
                 .UseSqlServer(SecretConfiguration.SecretString)
                 .Options;
@@ -138,13 +160,13 @@ namespace Project0.DataAccess
 
         public Customers GetASingleCustomer(string firstName, string lastName)
         {
-            Console.WriteLine("Searching by Name...");
+            Console.WriteLine("\tSearching by Name...");
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
                 .UseSqlServer(SecretConfiguration.SecretString)
                 .Options;
             var db = new project0Context(options);
             IEnumerable<Customers> customers = db.Customers.Where(n => n.FirstName.Contains(firstName) && n.LastName.Contains(lastName));
-            Console.WriteLine(customers.Count() + " records found.");
+            Console.WriteLine($"\t{customers.Count()} records found.");
             return SingleCustomerHandler(customers);
         }
 
@@ -256,7 +278,74 @@ namespace Project0.DataAccess
             return AllOrders;
         }
 
+        
+        // Place an order
+         // Update
+         // Update Location Stock
+        public bool UpdateLocationStock(Guid productId, int? locationId, int? quantity)
+        {
+            DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
+                .UseSqlServer(SecretConfiguration.SecretString)
+                .Options;
+            var db = new project0Context(options);
 
+            
+
+            var CurrentItem = from ls in db.LocationStock
+                              where ((ls.ProductId.Equals(productId)) && (ls.LocationId == locationId))
+                              select ls;
+            if (CurrentItem.Count() != 1)
+            {
+                Console.WriteLine("Item Count too low");
+                return false;
+            }
+            
+            CurrentItem.First().Quantity -= (int)quantity;
+            db.SaveChanges();
+            return true;
+        }
+
+        //Create
+        //Create Order
+        public bool CreateOrder(Guid orderId, Guid customerId, int? LocationId, DateTime orderDate)
+        {
+            DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
+                .UseSqlServer(SecretConfiguration.SecretString)
+                .Options;
+            var db = new project0Context(options);
+
+            var NewOrder = new Orders();
+            NewOrder.OrderId = orderId;
+            NewOrder.CustomerId = customerId;
+            NewOrder.LocationId = LocationId;
+            NewOrder.OrderDate = orderDate;
+
+            db.Orders.Add(NewOrder);
+            db.SaveChanges();
+            return true;
+        }
+
+        //Create
+        // Create Order Items
+        public bool CreateOrderItems(List<OrderItems> products)
+        {
+            DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
+                .UseSqlServer(SecretConfiguration.SecretString)
+                .Options;
+            var db = new project0Context(options);
+
+            foreach (var item in products)
+            {
+                var NewOrderItem = new OrderItems();
+                NewOrderItem.OrderId = item.OrderId;
+                NewOrderItem.ProductId = item.ProductId;
+                NewOrderItem.Quantity = item.Quantity;
+
+                db.OrderItems.Add(NewOrderItem);
+            }
+
+            return true;
+        }
 
 
     }

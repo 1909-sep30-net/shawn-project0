@@ -5,7 +5,7 @@ namespace Project0.DataAccess.Entities
 {
     public partial class LocationStock
     {
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
         public Guid ProductId { get; set; }
         public int Quantity { get; set; }
 

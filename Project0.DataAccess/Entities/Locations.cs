@@ -11,7 +11,7 @@ namespace Project0.DataAccess.Entities
             Orders = new HashSet<Orders>();
         }
 
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
         public string LocationName { get; set; }
 
         public virtual ICollection<LocationStock> LocationStock { get; set; }

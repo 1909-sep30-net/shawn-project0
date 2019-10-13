@@ -87,7 +87,7 @@ namespace Project0.Library
         {
             foreach (var customer in customers)
             {
-                Console.WriteLine(customer.NameFirst);
+                //Console.WriteLine(customer.NameFirst);
             }
         }
 

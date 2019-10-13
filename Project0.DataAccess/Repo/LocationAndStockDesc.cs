@@ -6,7 +6,7 @@ namespace Project0.DataAccess.Entities
     public class LocationAndStockDesc
     {
 
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
         public string LocationName { get; set; }
 
         public Guid ProductId { get; set; }
@@ -14,7 +14,7 @@ namespace Project0.DataAccess.Entities
         public string ProductDesc { get; set; }
         public int Quantity { get; set; }
 
-        public LocationAndStockDesc(int locationId, string locationName, Guid productId, string productName, string productDesc, int quantity)
+        public LocationAndStockDesc(int? locationId, string locationName, Guid productId, string productName, string productDesc, int quantity)
         {
             this.LocationId = locationId;
             this.LocationName = locationName;

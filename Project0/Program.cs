@@ -11,13 +11,19 @@ namespace Project0
 {
     public class Program
     {
-        [STAThread]
+        //[STAThread]
         static void Main(string[] args)
         {
 
             Console.WriteLine(FiggleFonts.SubZero.Render("Project Zero"));
             Console.WriteLine(FiggleFonts.FireFontK.Render("The Banana Store Kiosk"));
             Console.WriteLine("\tThe Banana Store Kiosk");
+
+            //var testUpdateStock = new DataConnection().UpdateLocationStock(Guid.Parse("4C992AA8-13E0-42DF-968D-5ECD08A8CBCB"), 10, 3);
+            //Console.WriteLine(testUpdateStock);
+
+            //var testCreateOrder = new DataConnection().CreateOrder(Guid.Parse("58e594d2-e54a-43d1-ac89-2c27e835a343"), Guid.Parse("518B9A19-BD55-4497-A01F-2E48F23D8D30"), 10, DateTime.Now);
+            //Console.WriteLine(testCreateOrder);
 
             // Ui init
             var UserInput = "MainMenu";
@@ -38,16 +44,16 @@ namespace Project0
                     Console.WriteLine("\tC => View customer history");
                     Console.WriteLine("\tS => View store history");
                     Console.WriteLine("\tO => Start new order");
-
+                    Console.Write("\t");
                     UserInput = Console.ReadLine().ToLower();
                 }
                 else if (UserInput == "a")
                 {
-                    Console.WriteLine("Adding a new customer...");
-                    Console.WriteLine("Enter first name of new customer :");
+                    Console.WriteLine("\tAdding a new customer...");
+                    Console.Write("\tEnter first name of new customer :");
                     User_FirstName = Console.ReadLine();
 
-                    Console.WriteLine("Enter last name of new customer :");
+                    Console.Write("\tEnter last name of new customer :");
                     User_LastName = Console.ReadLine();
 
                     var NewCustomer = new DataConnection().CreateCustomer(User_FirstName, User_LastName);
@@ -56,14 +62,14 @@ namespace Project0
                     if (!(string.IsNullOrEmpty(NewCustomer.FirstName) && string.IsNullOrEmpty(NewCustomer.LastName)))
                     {
                         Console.Clear();
-                        Console.WriteLine("\tSuccess!!");
-                        Console.WriteLine("\tNew Customer Report:");
+                        Console.WriteLine("\t----- New Customer Report -----");
                         Console.WriteLine($"\tName: {NewCustomer.FirstName} {NewCustomer.LastName}");
                         Console.WriteLine($"\tCustomer Id: {NewCustomer.CustomerId}");
+                        Console.WriteLine("\t----------");
                     }
                     else
                     {
-                        Console.WriteLine("Creation Error! Please try again and if the problem persists, contact a supervisor.");
+                        Console.WriteLine("\tCreation Error! Please try again and if the problem persists, contact a supervisor.");
                     }
 
                     // Ui Init
@@ -75,11 +81,11 @@ namespace Project0
                 }
                 else if (UserInput == "n")
                 {
-                    Console.WriteLine("Search for a customer...");
-                    Console.WriteLine("Enter first name of customer :");
+                    Console.WriteLine("\t---- Search for a customer -----");
+                    Console.Write("\tEnter first name of customer :");
                     User_FirstName = Console.ReadLine();
 
-                    Console.WriteLine("Enter last name of customer :");
+                    Console.Write("\tEnter last name of customer :");
                     User_LastName = Console.ReadLine();
 
                     var SearchResults = new DataConnection().GetASingleCustomer(User_FirstName, User_LastName);
@@ -87,13 +93,13 @@ namespace Project0
                     if (!(string.IsNullOrEmpty(SearchResults.FirstName) && string.IsNullOrEmpty(SearchResults.LastName)))
                     {
                         Console.Clear();
-                        Console.WriteLine("\tSuccess!!");
-                        Console.WriteLine("\tNew Customer Report:");
+                        Console.WriteLine("\t----- Found Customer Report -----");
                         Console.WriteLine($"\tName: {SearchResults.FirstName} {SearchResults.LastName}");
                         Console.WriteLine($"\tCustomer Id: {SearchResults.CustomerId}");
                         Console.WriteLine("\t----------");
-                        Console.WriteLine("X => Copy Customer Id to clipboard and return to main menu");
-                        Console.WriteLine("Any other key => Return to mainmenu with out copy");
+                        Console.WriteLine("\tX => Copy Customer Id to clipboard and return to main menu");
+                        Console.WriteLine("\tAny other key => Return to mainmenu with out copy");
+                        Console.Write("\t");
                         UserInput = Console.ReadLine().ToLower();
                         if (UserInput == "x")
                         {
@@ -108,7 +114,7 @@ namespace Project0
                     }
                     else
                     {
-                        Console.WriteLine("Customer does not exist in the database. Please try again and if the problem persists, contact a supervisor.");
+                        Console.WriteLine("\tCustomer does not exist in the database. Please try again and if the problem persists, contact a supervisor.");
                         UserInput = "n";
                         User_FirstName = "";
                         User_LastName = "";
@@ -117,12 +123,12 @@ namespace Project0
                 }
                 else if (UserInput == "c")
                 {
-                    Console.WriteLine("Customer history...");
+                    Console.WriteLine("\t----- Customer history -----");
 
 
                     if (User_CurrCustomerId == "")
                     {
-                        Console.WriteLine("Enter CustomerId : ");
+                        Console.Write("\tEnter CustomerId : ");
                         User_CurrCustomerId = Console.ReadLine();
                     }
 
@@ -130,60 +136,104 @@ namespace Project0
                     {
                         User_CurrCustomerId = "";
                         UserInput = "c";
-                        Console.WriteLine("Invalid Customer Id.");
+                        Console.WriteLine("\tInvalid Customer Id.");
                     }
                     else
                     {
-                        Console.WriteLine("Getting history...");
+                        Console.WriteLine("\tGetting history...");
                         Console.Clear();
                         var CompleteHistory = new DataConnection().GetOrderHistory(User_CurrCustomerId);
                         var TargetedHistory = CompleteHistory.GroupBy(o => o.OrderId).Select(o => o.First());
 
-                        Console.WriteLine("History of all orders");
-                        Console.WriteLine($"{TargetedHistory.First().FirstName} {TargetedHistory.First().LastName}");
-                        foreach (var order in TargetedHistory)
+                        Console.WriteLine("\t----- Customer Order History -----");
+                        try
                         {
-                            Console.WriteLine("========================");
-                            Console.WriteLine($"   Order Id : {order.OrderId}");
-                            Console.WriteLine($" Order Date : {order.OrderDate}");
-                            Console.WriteLine("========================");
+                            Console.WriteLine($"\t{TargetedHistory.First().FirstName} {TargetedHistory.First().LastName}");
+                            foreach (var order in TargetedHistory)
+                            {
+                                Console.WriteLine("\t========================");
+                                Console.WriteLine($"\t   Order Id : {order.OrderId}");
+                                Console.WriteLine($"\t Order Date : {order.OrderDate}");
+                                Console.WriteLine("\t========================");
+                            }
+
+                            Console.WriteLine("\tD => See order details");
+                            Console.WriteLine("\tM => Return to main menu");
+                            Console.Write("\t ");
+                            UserInput = Console.ReadLine().ToLower();
+                        } catch(InvalidOperationException ex)
+                        {
+                            Console.WriteLine("\tThere are no orders for this customer yet.");
+                            Console.WriteLine("\t----------");
+                            UserInput = "m";
                         }
+                        if (UserInput == "m")
+                        {
 
+                            User_CurrCustomerId = "";
+                            UserInput = "MainMenu";
 
-                        User_CurrCustomerId = "";
-                        UserInput = "MainMenu";
+                        }
+                        else
+                        {
+                            var User_OrderId = "";
+
+                            while (!DataConnection.ValidateOrderId(User_OrderId))
+                            {
+                                Console.WriteLine("\tPlease enter a valid order id : ");
+                                Console.Write("\t ");
+                                User_OrderId = Console.ReadLine().ToLower();
+                            }
+                            
+                            var OrderDetails = new DataConnection().GetSingleOrder(User_OrderId);
+                            Console.WriteLine("\t----- Customer Order History -----");
+                            Console.WriteLine($"\t{OrderDetails.First().FirstName} {OrderDetails.First().LastName}");
+                            Console.WriteLine($"\tCustomer Id : {OrderDetails.First().CustomerId}");
+                            Console.WriteLine($"\t{OrderDetails.First().LocationName}");
+                            Console.WriteLine($"\tLocation Id: {OrderDetails.First().LocationId}");
+                            foreach (var item in OrderDetails)
+                            {
+                                Console.WriteLine($"\tProduct name : {item.ProductName}");
+                                Console.WriteLine($"\t Description : {item.ProductDesc}");
+                                Console.WriteLine($"\t  Product Id : {item.ProductId}");
+                                Console.WriteLine($"\t    Quantity : {item.Quantity}");
+                            }
+                            Console.WriteLine($"\t----------");
+                            User_CurrCustomerId = "";
+                            UserInput = "MainMenu";
+                        }
                     }
 
                 }
                 else if (UserInput == "s")
                 {
-                    Console.WriteLine("Store history...");
-                    Console.WriteLine("Enter LocationId : ");
+                    Console.WriteLine("\t----- Location Order History -----");
+                    Console.Write("\tEnter LocationId : ");
 
                     User_CurrLocationId = Console.ReadLine();
                     if (!DataConnection.ValidateLocationId(User_CurrLocationId))
                     {
-                        Console.WriteLine("Invalid Location Id, Please try again, if the promblem persists talk with a supervisor.");
+                        Console.WriteLine("\tInvalid Location Id, Please try again, if the promblem persists talk with a supervisor.");
                         User_CurrLocationId = "";
                         UserInput = "s";
                     }
                     else
                     {
 
-                        Console.WriteLine("Getting history...");
+                        Console.WriteLine("\tGetting history...");
                         Console.Clear();
                         var CompleteHistory = new DataConnection().GetOrderHistory(int.Parse(User_CurrLocationId));
                         var TargetedHistory = CompleteHistory.GroupBy(o => o.OrderId).Select(o => o.First());
 
-                        Console.WriteLine("History of all orders");
+                        Console.WriteLine("\t----- History of all orders -----");
                         Console.WriteLine($"{TargetedHistory.First().LocationName}");
                         Console.WriteLine($"Location Id : {TargetedHistory.First().LocationId}");
                         foreach (var order in TargetedHistory)
                         {
-                            Console.WriteLine("========================");
-                            Console.WriteLine($"   Order Id : {order.OrderId}");
-                            Console.WriteLine($" Order Date : {order.OrderDate}");
-                            Console.WriteLine("========================");
+                            Console.WriteLine("\t========================");
+                            Console.WriteLine($"\t   Order Id : {order.OrderId}");
+                            Console.WriteLine($"\t Order Date : {order.OrderDate}");
+                            Console.WriteLine("\t========================");
                         }
 
 
@@ -197,16 +247,17 @@ namespace Project0
 
                     while (!DataConnection.ValidateCustomerId(User_CurrCustomerId))
                     {
-                        Console.WriteLine("Enter a valid CustomerId : ");
+                        Console.Write("\tPlease enter a valid CustomerId : ");
                         User_CurrCustomerId = Console.ReadLine();
                     };
+                    CurrentCart.CustomerId = Guid.Parse(User_CurrCustomerId);
 
                     while (!DataConnection.ValidateLocationId(User_CurrLocationId))
                     {
-                        Console.WriteLine("Enter a valid LocationId : ");
+                        Console.Write("\tPlease enter a valid LocationId : ");
                         User_CurrLocationId = Console.ReadLine();
                     };
-
+                    CurrentCart.LocationId = (int?)int.Parse(User_CurrLocationId);
 
                     var User_CurrProductId = "";
                     var User_ProductQuantity = "";
@@ -214,12 +265,13 @@ namespace Project0
 
 
                     Console.WriteLine("\t----- Order Menu -----");
-                    Console.WriteLine("\tA => Add product");
-                    Console.WriteLine("\tR => Remove product");
-                    Console.WriteLine("\tV => View current order");
-                    Console.WriteLine("\tI => View store invetory");
-                    Console.WriteLine("\tP => Place order");
-                    Console.WriteLine("\tXCX => Cancel order");
+                    Console.WriteLine("\tA => Add product to cart");
+                    Console.WriteLine("\tR => Remove product from cart");
+                    Console.WriteLine("\tV => View current cart");
+                    Console.WriteLine($"\tI => View current location invetory");
+                    Console.WriteLine("\tP => Place everything in cart on order");
+                    Console.WriteLine("\tXCX => Cancel entire order");
+                    Console.Write("\t");
                     UserInput = Console.ReadLine().ToLower();
 
                     if (UserInput == "i")
@@ -228,16 +280,16 @@ namespace Project0
                         var LocationInvetory = new DataConnection().GetLocationStock(int.Parse(User_CurrLocationId));
                         Console.WriteLine(LocationInvetory);
 
-                        Console.WriteLine("Location Stock");
-                        Console.WriteLine($"{LocationInvetory.First().LocationName}");
-                        Console.WriteLine($"Location Id : {LocationInvetory.First().LocationId}");
+                        Console.WriteLine("\t----- Location Stock Report -----");
+                        Console.WriteLine($"\t{LocationInvetory.First().LocationName}");
+                        Console.WriteLine($"\tLocation Id : {LocationInvetory.First().LocationId}");
                         foreach (var order in LocationInvetory)
                         {
-                            Console.WriteLine("========================");
-                            Console.WriteLine($"  Product : {order.ProductId}");
-                            Console.WriteLine($"     Desc : {order.ProductDesc}");
-                            Console.WriteLine($" Quantity : {order.Quantity}");
-                            Console.WriteLine("========================");
+                            Console.WriteLine("\t========================");
+                            Console.WriteLine($"\t  Product : {order.ProductId}");
+                            Console.WriteLine($"\t     Desc : {order.ProductDesc}");
+                            Console.WriteLine($"\t Quantity : {order.Quantity}");
+                            Console.WriteLine("\t========================");
                         }
                         UserInput = "o";
 
@@ -248,13 +300,13 @@ namespace Project0
 
                         do
                         {
-                            Console.WriteLine("Please enter a valid ProductId : ");
+                            Console.Write("\tPlease enter a valid ProductId : ");
                             User_CurrProductId = Console.ReadLine();
                         } while (!DataConnection.ValidateProductId(User_CurrProductId));
 
                         do
                         {
-                            Console.WriteLine("Please enter a valid quantity : ");
+                            Console.Write("\tPlease enter a valid quantity : ");
                             User_ProductQuantity = Console.ReadLine();
                         } while (!int.TryParse(User_ProductQuantity, out intUser_ProductQuantity));
 
@@ -267,7 +319,7 @@ namespace Project0
                                 ProductId = Guid.Parse(User_CurrProductId),
                                 Quantity = intUser_ProductQuantity
                             });
-                            Console.WriteLine("Added to Cart...");
+                            Console.WriteLine("Product added to cart...");
                             UserInput = "o";
 
                             User_CurrProductId = "";
@@ -276,8 +328,8 @@ namespace Project0
                         }
                         else
                         {
-                            Console.WriteLine($"The location you have selected does not have {User_ProductQuantity} of that item.");
-                            Console.WriteLine("Try a different location or reselect the product and choose less.");
+                            Console.WriteLine($"\tThe location you have selected does not have {User_ProductQuantity} of that item.");
+                            Console.WriteLine("\tTry a different location or reselect the product and choose less.");
                             UserInput = "o";
                         }
 
@@ -287,7 +339,7 @@ namespace Project0
                     {
                         while (!DataConnection.ValidateProductId(User_CurrProductId))
                         {
-                            Console.WriteLine("Enter ProductId : ");
+                            Console.Write("\tPlease enter a valid product Id : ");
                             User_CurrProductId = Console.ReadLine();
                         }
 
@@ -298,15 +350,15 @@ namespace Project0
                     else if (UserInput == "v")
                     {
                         var ItemsInCart = CurrentCart.InvetoryItems();
-                        Console.WriteLine("Current Order Information");
-                        Console.WriteLine($"Customer Id : {User_CurrCustomerId}");
-                        Console.WriteLine($"Location Id : {User_CurrLocationId}");
+                        Console.WriteLine("\t----- Current Order Information -----");
+                        Console.WriteLine($"\tCustomer Id : {User_CurrCustomerId}");
+                        Console.WriteLine($"\tLocation Id : {User_CurrLocationId}");
                         foreach (var order in ItemsInCart)
                         {
-                            Console.WriteLine("========================");
-                            Console.WriteLine($"  Product : {order.ProductId}");
-                            Console.WriteLine($" Quantity : {order.Quantity}");
-                            Console.WriteLine("========================");
+                            Console.WriteLine("\t========================");
+                            Console.WriteLine($"\t  Product : {order.ProductId}");
+                            Console.WriteLine($"\t Quantity : {order.Quantity}");
+                            Console.WriteLine("\t========================");
                         }
                         UserInput = "o";
 
@@ -314,14 +366,24 @@ namespace Project0
                     }
                     else if (UserInput == "p")
                     {
-                        
-                        //var OrderCart = new DataConnection()
 
-                        Console.WriteLine("OrderPlaced");
-                        User_CurrCustomerId = "";
-                        User_CurrLocationId = "";
-                        UserInput = "MainMenu";
-                        CurrentCart = new Cart();
+                        //var OrderCart = new DataConnection()
+                        if (CurrentCart.PlaceOrder())
+                        {
+                            Console.WriteLine("\tCustomer order has been placed.");
+                            User_CurrCustomerId = "";
+                            User_CurrLocationId = "";
+                            UserInput = "MainMenu";
+                            CurrentCart = new Cart();
+                        } else
+                        {
+                            Console.WriteLine("If error persists please contact a supervisor.");
+                            User_CurrCustomerId = "";
+                            User_CurrLocationId = "";
+                            UserInput = "MainMenu";
+                            CurrentCart = new Cart();
+                        }
+                        
                     }
                     else if (UserInput == "xcx")
                     {
@@ -344,7 +406,7 @@ namespace Project0
                 }
                 else
                 {
-                    Console.WriteLine("Invalid option selected, please try again:");
+                    Console.Write("Invalid option selected, please try again: ");
                     UserInput = Console.ReadLine();
                 }
             }

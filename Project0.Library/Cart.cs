@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Project0.Library;
+using Project0.DataAccess;
 using Project0.DataAccess.Entities;
 
 
@@ -13,7 +14,7 @@ namespace Project0.Library
         public Guid OrderId { get; set; }
 
         public Guid CustomerId { get; set; }
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
         public DateTime OrderDate { get; set; }
         public IUpdateCart UpdateCart { get; set; }
 
@@ -21,6 +22,7 @@ namespace Project0.Library
         {
             OrderId = Guid.NewGuid();
             Products = new List<OrderItems>();
+            OrderDate = DateTime.Now;
         }
 
         public List<OrderItems> InvetoryItems()
@@ -69,8 +71,36 @@ namespace Project0.Library
             return false;
         }
 
-        public bool Order()
+        public bool PlaceOrder()
         {
+            // Edit location stock
+            foreach (var item in Products)
+            {
+                
+                var SuccessfulLocationStockUpdate = new DataConnection().UpdateLocationStock(item.ProductId, LocationId, item.Quantity);
+                if(!SuccessfulLocationStockUpdate)
+                {
+                    Console.WriteLine($"\tSomething went wrong when updating location stock for item {item.ProductId}");
+                    return false;
+                }
+                Console.WriteLine($"\tUpdated location stock for {item.ProductId}");
+            }
+            // Create orders
+            var SuccessfulCreateOrder = new DataConnection().CreateOrder(OrderId, CustomerId, LocationId, OrderDate);
+            if (!SuccessfulCreateOrder)
+            {
+                Console.WriteLine($"\tSomething went wrong when placing order with id of {OrderId}");
+                return false;
+            }
+            Console.WriteLine($"\tCreated order with an id of {OrderId}");
+            // Create order items
+            var SuccessfulCreateOrderItems = new DataConnection().CreateOrderItems(Products);
+            if (!SuccessfulCreateOrderItems)
+            {
+                Console.WriteLine($"\tSomething went wrong when adding items to the order with id of {OrderId}");
+                return false;
+            }
+
             return true;
         }
 

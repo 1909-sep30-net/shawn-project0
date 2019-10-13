@@ -10,7 +10,7 @@ namespace Project0.DataAccess.Entities
         public Guid CustomerId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public int LocationId { get; set; }
+        public int? LocationId { get; set; }
         public string LocationName { get; set; }
         public Guid ProductId { get; set; }
         public string ProductName { get; set; }
@@ -18,7 +18,7 @@ namespace Project0.DataAccess.Entities
         public int? Quantity { get; set; }
         public DateTime OrderDate { get; set; }
 
-        public OrderHistory(Guid orderId, Guid customerId, string firstName, string lastName, int locationId, string locationName, Guid productId, string productName, string productDesc, int? quantity, DateTime orderDate)
+        public OrderHistory(Guid orderId, Guid customerId, string firstName, string lastName, int? locationId, string locationName, Guid productId, string productName, string productDesc, int? quantity, DateTime orderDate)
         {
             OrderId = orderId;
             CustomerId = customerId;

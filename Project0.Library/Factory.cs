@@ -6,10 +6,10 @@ namespace Project0.Library
 {
     public static class Factory
     {
-        public static ICustomer CreateCustomer()
-        {
-            return new Customer();
-        }
+        //public static ICustomer CreateCustomer()
+        //{
+        //    return new Customer();
+        //}
 
         //public static ICart CreateCart(ICustomer Owner)
         //{
