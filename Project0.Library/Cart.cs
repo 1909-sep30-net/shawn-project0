@@ -79,7 +79,6 @@ namespace Project0.Library
                     return false;
                 }
             }
-
             // Edit location stock
             foreach (var item in Products)
             {  
@@ -92,7 +91,8 @@ namespace Project0.Library
             }
             Console.WriteLine($"\tUpdated location stock for {item.ProductId}");
             }
-            // Create orders
+
+            // Create order
             var SuccessfulCreateOrder = new DataConnection().CreateOrder(OrderId, CustomerId, LocationId, OrderDate);
             if (!SuccessfulCreateOrder)
             {

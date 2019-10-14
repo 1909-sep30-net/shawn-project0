@@ -230,13 +230,12 @@ namespace Project0.DataAccess
             var db = new project0Context(options);
 
             var AllOrders = from o in db.Orders
+                            join oi in db.OrderItems on o.OrderId equals oi.OrderId
+                            join c in db.Customers on o.CustomerId equals c.CustomerId
+                            join l in db.Locations on o.LocationId equals l.LocationId
+                            join p in db.Products on oi.ProductId equals p.ProductId
                             where (o.OrderId.ToString() == orderId)
-                            join od in db.OrderItems on o.OrderId equals od.OrderId
-                            join pd in db.Products on od.ProductId equals pd.ProductId
-                            join cd in db.Customers on o.CustomerId equals cd.CustomerId
-                            join ld in db.Locations on o.LocationId equals ld.LocationId
-                            
-                            select new OrderHistory(o.OrderId, o.CustomerId, cd.FirstName, cd.LastName, o.LocationId, ld.LocationName, od.ProductId, pd.ProductName, pd.ProductDesc, od.Quantity, o.OrderDate);
+                            select new OrderHistory(o.OrderId, o.CustomerId, c.FirstName, c.LastName, o.LocationId, l.LocationName, p.ProductId, p.ProductName, p.ProductDesc, oi.Quantity, o.OrderDate);
             return AllOrders;
         }
 
@@ -337,6 +336,7 @@ namespace Project0.DataAccess
 
                 db.OrderItems.Add(NewOrderItem);
             }
+            db.SaveChanges();
 
             return true;
         }

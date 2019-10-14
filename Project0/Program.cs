@@ -261,6 +261,8 @@ namespace Project0
 
                         var OrderDetails = new DataConnection().GetSingleOrder(User_OrderId);
                         Console.WriteLine("\t----- Individual Order Details -----");
+
+
                         Console.WriteLine($"\tCustomer Name : {OrderDetails.First().FirstName} {OrderDetails.First().LastName}");
                         Console.WriteLine($"\t  Customer Id : {OrderDetails.First().CustomerId}");
                         Console.WriteLine($"\tLocation Name :{OrderDetails.First().LocationName}");
