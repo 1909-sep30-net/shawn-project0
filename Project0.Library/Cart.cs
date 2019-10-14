@@ -12,7 +12,6 @@ namespace Project0.Library
     {
         public List<OrderItems> Products { get; set; }
         public Guid OrderId { get; set; }
-
         public Guid CustomerId { get; set; }
         public int? LocationId { get; set; }
         public DateTime OrderDate { get; set; }
@@ -54,7 +53,6 @@ namespace Project0.Library
             }
 
             Products.Add(orderItem);
-
         }
 
         public bool Remove(Guid productId)
@@ -72,17 +70,27 @@ namespace Project0.Library
 
         public bool PlaceOrder()
         {
-            // Edit location stock
+            // Check Stock once more
             foreach (var item in Products)
             {
-                
-                var SuccessfulLocationStockUpdate = new DataConnection().UpdateLocationStock(item.ProductId, LocationId, item.Quantity);
-                if(!SuccessfulLocationStockUpdate)
+                if (!DataConnection.ValidateStock(LocationId, item.ProductId.ToString(), (int)item.Quantity, 0))
                 {
-                    Console.WriteLine($"\tSomething went wrong when updating location stock for item {item.ProductId}");
+                    Console.WriteLine($"\tSomething went wrong when checking location for product id {item.ProductId}. It appears this location is out of that item now.");
                     return false;
                 }
-                Console.WriteLine($"\tUpdated location stock for {item.ProductId}");
+            }
+
+            // Edit location stock
+            foreach (var item in Products)
+            {  
+
+            var SuccessfulLocationStockUpdate = new DataConnection().UpdateLocationStock(item.ProductId, LocationId, item.Quantity);
+            if(!SuccessfulLocationStockUpdate)
+            {
+                Console.WriteLine($"\tSomething went wrong when updating location stock for item {item.ProductId}");
+                return false;
+            }
+            Console.WriteLine($"\tUpdated location stock for {item.ProductId}");
             }
             // Create orders
             var SuccessfulCreateOrder = new DataConnection().CreateOrder(OrderId, CustomerId, LocationId, OrderDate);
@@ -99,7 +107,6 @@ namespace Project0.Library
                 Console.WriteLine($"\tSomething went wrong when adding items to the order with id of {OrderId}");
                 return false;
             }
-
             return true;
         }
 

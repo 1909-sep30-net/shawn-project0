@@ -204,7 +204,7 @@ namespace Project0.DataAccess
         }
 
         // See if there is enough of a product in stock at a location
-        public static IQueryable<LocationStock> ValidateStock(int locationId, string productId, int quantity, int? cartQuantity)
+        public static bool ValidateStock(int? locationId, string productId, int quantity, int? cartQuantity)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
                 .UseSqlServer(SecretConfiguration.SecretString)
@@ -216,7 +216,7 @@ namespace Project0.DataAccess
                           where ls.Quantity >= (quantity + cartQuantity)
             select ls;
 
-            return Results;
+            return Results.Count() > 0;
 
         }
 
@@ -235,6 +235,7 @@ namespace Project0.DataAccess
                             join pd in db.Products on od.ProductId equals pd.ProductId
                             join cd in db.Customers on o.CustomerId equals cd.CustomerId
                             join ld in db.Locations on o.LocationId equals ld.LocationId
+                            
                             select new OrderHistory(o.OrderId, o.CustomerId, cd.FirstName, cd.LastName, o.LocationId, ld.LocationName, od.ProductId, pd.ProductName, pd.ProductDesc, od.Quantity, o.OrderDate);
             return AllOrders;
         }

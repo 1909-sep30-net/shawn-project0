@@ -11,14 +11,14 @@ namespace Project0
 {
     public class Program
     {
-        //[STAThread]
         static void Main(string[] args)
         {
-
             Console.WriteLine(FiggleFonts.SubZero.Render("Project Zero"));
-            Console.WriteLine("----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----");
+            Console.WriteLine("----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----");
+            Console.WriteLine("\t");
             Console.WriteLine(FiggleFonts.Short.Render("     Banana Store Kiosk"));
-            Console.WriteLine("\tThe Banana Store Kiosk");
+            Console.WriteLine("\t");
+            Console.WriteLine("\tBanana Store Kiosk");
 
             // Ui init
             var UserInput = "MainMenu";
@@ -317,17 +317,17 @@ namespace Project0
                     {
 
                         var LocationInvetory = new DataConnection().GetLocationStock(int.Parse(User_CurrLocationId));
-                        Console.WriteLine(LocationInvetory);
 
                         Console.WriteLine("\t----- Location Stock Report -----");
-                        Console.WriteLine($"\t{LocationInvetory.First().LocationName}");
-                        Console.WriteLine($"\tLocation Id : {LocationInvetory.First().LocationId}");
+                        Console.WriteLine($"\tLocation Name : {LocationInvetory.First().LocationName}");
+                        Console.WriteLine($"\t  Location Id : {LocationInvetory.First().LocationId}");
                         foreach (var order in LocationInvetory)
                         {
                             Console.WriteLine("\t========================");
-                            Console.WriteLine($"\t  Product : {order.ProductId}");
-                            Console.WriteLine($"\t     Desc : {order.ProductDesc}");
-                            Console.WriteLine($"\t Quantity : {order.Quantity}");
+                            Console.WriteLine($"\tProduct Id : {order.ProductId}");
+                            Console.WriteLine($"\t   Product : {order.ProductName}");
+                            Console.WriteLine($"\t      Desc : {order.ProductDesc}");
+                            Console.WriteLine($"\t  Quantity : {order.Quantity}");
                             Console.WriteLine("\t========================");
                         }
                         UserInput = "o";
@@ -349,7 +349,7 @@ namespace Project0
                             User_ProductQuantity = Console.ReadLine();
                         } while (!int.TryParse(User_ProductQuantity, out intUser_ProductQuantity));
 
-                        if (DataConnection.ValidateStock(int.Parse(User_CurrLocationId), User_CurrProductId, intUser_ProductQuantity, CurrentCart.InvetoryItems(Guid.Parse(User_CurrProductId))).Count() > 0)
+                        if (DataConnection.ValidateStock(int.Parse(User_CurrLocationId), User_CurrProductId, intUser_ProductQuantity, CurrentCart.InvetoryItems(Guid.Parse(User_CurrProductId))))
                         {
 
                             CurrentCart.Add(new OrderItems()
@@ -373,7 +373,6 @@ namespace Project0
                         }
 
                     }
-
                     else if (UserInput == "r")
                     {
                         while (!DataConnection.ValidateProductId(User_CurrProductId))
@@ -383,7 +382,6 @@ namespace Project0
                         }
 
                         CurrentCart.Remove(Guid.Parse(User_CurrProductId));
-
 
                     }
                     else if (UserInput == "v")
@@ -400,12 +398,9 @@ namespace Project0
                             Console.WriteLine("\t========================");
                         }
                         UserInput = "o";
-
-
                     }
                     else if (UserInput == "p")
                     {
-
                         //var OrderCart = new DataConnection()
                         if (CurrentCart.PlaceOrder())
                         {
@@ -432,10 +427,7 @@ namespace Project0
                         User_CurrLocationId = "";
                         User_CurrCustomerId = "";
                         User_CurrProductId = "";
-
                     }
-
-
 
                     //return to order menu
                     if (UserInput != "MainMenu")
