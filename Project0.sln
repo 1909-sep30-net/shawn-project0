@@ -6,10 +6,13 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project0.UI", "Project0\Project0.UI.csproj", "{DD45D0EC-AEB0-4D6E-A24F-1F02ABFA91C3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project0.DataAccess", "Project0.DataAccess\Project0.DataAccess.csproj", "{408D2C4F-06D8-4870-8817-E849B9523A57}"
+	ProjectSection(ProjectDependencies) = postProject
+		{E2411243-DF28-4676-8516-B411F4E501FD} = {E2411243-DF28-4676-8516-B411F4E501FD}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project0.Library", "Project0.Library\Project0.Library.csproj", "{E2411243-DF28-4676-8516-B411F4E501FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Project0.Tests", "Project0.Tests\Project0.Tests.csproj", "{E3F1C015-D17F-4090-9A76-A37B219F3F57}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Project0.Tests", "Project0.Tests\Project0.Tests.csproj", "{E3F1C015-D17F-4090-9A76-A37B219F3F57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
