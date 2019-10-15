@@ -6,13 +6,18 @@ using Project0.DataAccess;
 using Project0.DataAccess.Entities;
 using System.Linq;
 using Figgle;
+using NLog;
 
 namespace Project0
 {
     public class Program
     {
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         static void Main(string[] args)
         {
+
+
             Console.WriteLine(FiggleFonts.SubZero.Render("Project Zero"));
             Console.WriteLine("----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- ----- -----");
             Console.WriteLine("\t");
@@ -49,16 +54,16 @@ namespace Project0
                     Console.WriteLine("");
                     Console.WriteLine("");
                     Console.WriteLine("\tAdding a new customer...");
-                    Console.Write("\tEnter first name of new customer :");
+                    Console.Write("\tEnter first name of new customer : ");
                     User_FirstName = Console.ReadLine();
 
-                    Console.Write("\tEnter last name of new customer :");
+                    Console.Write("\tEnter last name of new customer : ");
                     User_LastName = Console.ReadLine();
 
                     var NewCustomer = new DataConnection().CreateCustomer(User_FirstName, User_LastName);
 
 
-                    if (!(string.IsNullOrEmpty(NewCustomer.FirstName) && string.IsNullOrEmpty(NewCustomer.LastName)))
+                    if (!(string.IsNullOrEmpty(NewCustomer.FirstName) || string.IsNullOrEmpty(NewCustomer.LastName)))
                     {
 
                         Console.WriteLine("");
@@ -71,6 +76,7 @@ namespace Project0
                     else
                     {
                         Console.WriteLine("\tCreation Error! Please try again and if the problem persists, contact a supervisor.");
+                        logger.Warn($"Invalid user input \"{User_FirstName} or {User_LastName}\".");
                     }
 
                     // Ui Init
@@ -120,6 +126,7 @@ namespace Project0
                     else
                     {
                         Console.WriteLine("\tCustomer does not exist in the database. Please try again and if the problem persists, contact a supervisor.");
+                        logger.Warn($"Invalid user input \"{User_FirstName} or {User_LastName}\".");
                         UserInput = "n";
                         User_FirstName = "";
                         User_LastName = "";
@@ -142,9 +149,11 @@ namespace Project0
 
                     if (!DataConnection.ValidateCustomerId(User_CurrCustomerId))
                     {
+                        Console.WriteLine("\tInvalid Customer Id.");
+                        logger.Warn($"Invalid user input \"{User_CurrCustomerId}\".");
                         User_CurrCustomerId = "";
                         UserInput = "c";
-                        Console.WriteLine("\tInvalid Customer Id.");
+                        
                     }
                     else
                     {
@@ -179,6 +188,7 @@ namespace Project0
                             Console.WriteLine("\t----------");
                             Console.WriteLine("");
                             Console.WriteLine("");
+                            logger.Warn($"Invalid user input \"{User_CurrCustomerId}\". Exception details : {ex}");
                             UserInput = "m";
                         }
                         if (UserInput == "m")
@@ -192,11 +202,14 @@ namespace Project0
                         {
                             var User_OrderId = "";
 
+                            var nog = false;
                             while (!DataConnection.ValidateOrderId(User_OrderId))
                             {
+                                logger.Warn($"Invalid user input \"{User_OrderId}\".");
                                 Console.WriteLine("\tPlease enter a valid order id : ");
                                 Console.Write("\t ");
                                 User_OrderId = Console.ReadLine().ToLower();
+                                nog = true;
                             }
 
                             var OrderDetails = new DataConnection().GetSingleOrder(User_OrderId);
@@ -227,6 +240,7 @@ namespace Project0
                                 Console.WriteLine("There was an error while retrieving information from database.");
                                 Console.WriteLine("If the error persists, please contact a supervisor.");
                                 Console.WriteLine($"Error details: {ex}");
+                                logger.Error($"Database Invalid Operation Exception: {ex}.");
                             }
                             finally
                             {
@@ -249,6 +263,7 @@ namespace Project0
                     if (!DataConnection.ValidateLocationId(User_CurrLocationId))
                     {
                         Console.WriteLine("\tInvalid Location Id, Please try again, if the promblem persists talk with a supervisor.");
+                        logger.Warn($"Invalid user input \"{User_CurrLocationId}\".");
                         User_CurrLocationId = "";
                         UserInput = "s";
                     }
@@ -290,11 +305,14 @@ namespace Project0
                     {
                         var User_OrderId = "";
 
+                        var nog = false;
                         while (!DataConnection.ValidateOrderId(User_OrderId))
                         {
+                            if (nog) { logger.Warn($"Invalid user input \"{User_OrderId}\"."); }
                             Console.WriteLine("\tPlease enter a valid order id : ");
                             Console.Write("\t ");
                             User_OrderId = Console.ReadLine().ToLower();
+                            nog = true;
                         }
 
                         var OrderDetails = new DataConnection().GetSingleOrder(User_OrderId);
@@ -326,16 +344,20 @@ namespace Project0
                 }
                 else if (UserInput == "o")
                 {
-
+                    var nog = false;
                     while (!DataConnection.ValidateCustomerId(User_CurrCustomerId))
                     {
+                        if (nog) { logger.Warn($"Invalid user input \"{User_CurrCustomerId}\"."); } else { nog = true; }
                         Console.Write("\tPlease enter a valid CustomerId : ");
                         User_CurrCustomerId = Console.ReadLine();
+                        
                     };
                     CurrentCart.CustomerId = Guid.Parse(User_CurrCustomerId);
 
+                    nog = false;
                     while (!DataConnection.ValidateLocationId(User_CurrLocationId))
                     {
+                        if (nog) { logger.Warn($"Invalid user input \"{User_CurrLocationId}\"."); } else { nog = true; } 
                         Console.Write("\tPlease enter a valid LocationId : ");
                         User_CurrLocationId = Console.ReadLine();
                     };
@@ -382,15 +404,18 @@ namespace Project0
                     }
                     else if (UserInput == "a")
                     {
-
+                        nog = false;
                         do
                         {
+                            if (nog) { logger.Warn($"Invalid user input \"{User_CurrCustomerId}\"."); } else { nog = true; };
                             Console.Write("\tPlease enter a valid ProductId : ");
                             User_CurrProductId = Console.ReadLine();
                         } while (!DataConnection.ValidateProductId(User_CurrProductId));
 
+                        nog = false;
                         do
                         {
+                            if (nog) { logger.Warn($"Invalid user input \"{User_CurrCustomerId}\"."); } else { nog = true; };
                             Console.Write("\tPlease enter a valid quantity : ");
                             User_ProductQuantity = Console.ReadLine();
                         } while (!int.TryParse(User_ProductQuantity, out intUser_ProductQuantity));
@@ -415,14 +440,17 @@ namespace Project0
                         {
                             Console.WriteLine($"\tThe location you have selected does not have {User_ProductQuantity} of that item.");
                             Console.WriteLine("\tTry a different location or reselect the product and choose less.");
+                            logger.Warn($"Location out of stock of item {User_CurrProductId}");
                             UserInput = "o";
                         }
 
                     }
                     else if (UserInput == "r")
                     {
+                        nog = false;
                         while (!DataConnection.ValidateProductId(User_CurrProductId))
                         {
+                            if (nog) { logger.Warn($"Invalid user input \"{User_CurrProductId}\"."); } else { nog = true; }
                             Console.Write("\tPlease enter a valid product Id : ");
                             User_CurrProductId = Console.ReadLine();
                         }
@@ -461,6 +489,7 @@ namespace Project0
                         }
                         else
                         {
+                            logger.Error($"OrderId : {CurrentCart.OrderId} NOT PLACED on {CurrentCart.OrderDate}");
                             Console.WriteLine("\tIf error persists please contact a supervisor.");
                             User_CurrCustomerId = "";
                             User_CurrLocationId = "";
