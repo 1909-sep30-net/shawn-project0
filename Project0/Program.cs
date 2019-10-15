@@ -18,7 +18,6 @@ namespace Project0
             Console.WriteLine("\t");
             Console.WriteLine(FiggleFonts.Short.Render("     Banana Store Kiosk"));
             Console.WriteLine("\t");
-            Console.WriteLine("\tBanana Store Kiosk");
 
             // Ui init
             var UserInput = "MainMenu";
@@ -32,6 +31,9 @@ namespace Project0
             {
                 if (UserInput == "MainMenu")
                 {
+                    Console.WriteLine("");
+                    Console.WriteLine("");
+                    Console.WriteLine("\tBanana Store Kiosk");
                     Console.WriteLine("\t----- Main Menu -----");
                     Console.WriteLine("\tEnter a command : ");
                     Console.WriteLine("\tA => Add new customer");
@@ -44,6 +46,8 @@ namespace Project0
                 }
                 else if (UserInput == "a")
                 {
+                    Console.WriteLine("");
+                    Console.WriteLine("");
                     Console.WriteLine("\tAdding a new customer...");
                     Console.Write("\tEnter first name of new customer :");
                     User_FirstName = Console.ReadLine();
@@ -56,7 +60,9 @@ namespace Project0
 
                     if (!(string.IsNullOrEmpty(NewCustomer.FirstName) && string.IsNullOrEmpty(NewCustomer.LastName)))
                     {
-                        Console.Clear();
+
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         Console.WriteLine("\t----- New Customer Report -----");
                         Console.WriteLine($"\tName: {NewCustomer.FirstName} {NewCustomer.LastName}");
                         Console.WriteLine($"\tCustomer Id: {NewCustomer.CustomerId}");
@@ -76,6 +82,9 @@ namespace Project0
                 }
                 else if (UserInput == "n")
                 {
+
+                    Console.WriteLine("");
+                    Console.WriteLine("");
                     Console.WriteLine("\t---- Search for a customer -----");
                     Console.Write("\tEnter first name of customer :");
                     User_FirstName = Console.ReadLine();
@@ -87,7 +96,8 @@ namespace Project0
 
                     if (!(string.IsNullOrEmpty(SearchResults.FirstName) && string.IsNullOrEmpty(SearchResults.LastName)))
                     {
-                        Console.Clear();
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         Console.WriteLine("\t----- Found Customer Report -----");
                         Console.WriteLine($"\tName: {SearchResults.FirstName} {SearchResults.LastName}");
                         Console.WriteLine($"\tCustomer Id: {SearchResults.CustomerId}");
@@ -118,6 +128,9 @@ namespace Project0
                 }
                 else if (UserInput == "c")
                 {
+
+                    Console.WriteLine("");
+                    Console.WriteLine("");
                     Console.WriteLine("\t----- Customer history -----");
 
 
@@ -140,6 +153,8 @@ namespace Project0
                         var CompleteHistory = new DataConnection().GetOrderHistory(User_CurrCustomerId);
                         var TargetedHistory = CompleteHistory.GroupBy(o => o.OrderId).Select(o => o.First());
 
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         Console.WriteLine("\t----- Customer Order History -----");
                         try
                         {
@@ -162,6 +177,8 @@ namespace Project0
                         {
                             Console.WriteLine("\tThere are no orders for this customer yet.");
                             Console.WriteLine("\t----------");
+                            Console.WriteLine("");
+                            Console.WriteLine("");
                             UserInput = "m";
                         }
                         if (UserInput == "m")
@@ -183,30 +200,48 @@ namespace Project0
                             }
 
                             var OrderDetails = new DataConnection().GetSingleOrder(User_OrderId);
-                            Console.WriteLine("\t----- Individual Order Details -----");
-                            Console.WriteLine($"\tCustomer Name : {OrderDetails.First().FirstName} {OrderDetails.First().LastName}");
-                            Console.WriteLine($"\t  Customer Id : {OrderDetails.First().CustomerId}");
-                            Console.WriteLine($"\tLocation Name :{OrderDetails.First().LocationName}");
-                            Console.WriteLine($"\t   Location Id: {OrderDetails.First().LocationId}");
-                            foreach (var item in OrderDetails)
+                            try
                             {
-                                Console.WriteLine("\t----------");
-                                Console.WriteLine($"\tProduct name : {item.ProductName}");
-                                Console.WriteLine($"\t Description : {item.ProductDesc}");
-                                Console.WriteLine($"\t  Product Id : {item.ProductId}");
-                                Console.WriteLine($"\t    Quantity : {item.Quantity}");
-                                Console.WriteLine("\t----------");
+                                Console.WriteLine("");
+                                Console.WriteLine("");
+                                Console.WriteLine("\t----- Individual Order Details -----");
+                                Console.WriteLine($"\tCustomer Name : {OrderDetails.First().FirstName} {OrderDetails.First().LastName}");
+                                Console.WriteLine($"\t  Customer Id : {OrderDetails.First().CustomerId}");
+                                Console.WriteLine($"\tLocation Name :{OrderDetails.First().LocationName}");
+                                Console.WriteLine($"\t   Location Id: {OrderDetails.First().LocationId}");
+                                foreach (var item in OrderDetails)
+                                {
+                                    Console.WriteLine("\t----------");
+                                    Console.WriteLine($"\tProduct name : {item.ProductName}");
+                                    Console.WriteLine($"\t Description : {item.ProductDesc}");
+                                    Console.WriteLine($"\t  Product Id : {item.ProductId}");
+                                    Console.WriteLine($"\t    Quantity : {item.Quantity}");
+                                    Console.WriteLine("\t----------");
+                                }
+                                Console.WriteLine($"\t----------");
+                                Console.WriteLine("");
+                                Console.WriteLine("");
                             }
-                            Console.WriteLine($"\t----------");
-                            User_CurrCustomerId = "";
-                            User_CurrLocationId = "";
-                            UserInput = "MainMenu";
+                            catch (InvalidOperationException ex)
+                            {
+                                Console.WriteLine("There was an error while retrieving information from database.");
+                                Console.WriteLine("If the error persists, please contact a supervisor.");
+                                Console.WriteLine($"Error details: {ex}");
+                            }
+                            finally
+                            {
+                                User_CurrCustomerId = "";
+                                User_CurrLocationId = "";
+                                UserInput = "MainMenu";
+                            }
                         }
                     }
 
                 }
                 else if (UserInput == "s")
                 {
+                    Console.WriteLine("");
+                    Console.WriteLine("");
                     Console.WriteLine("\t----- Location Order History -----");
                     Console.Write("\tEnter LocationId : ");
 
@@ -224,7 +259,8 @@ namespace Project0
                         Console.Clear();
                         var CompleteHistory = new DataConnection().GetOrderHistory((int?)int.Parse(User_CurrLocationId));
                         var TargetedHistory = CompleteHistory.GroupBy(o => o.OrderId).Select(o => o.First());
-
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         Console.WriteLine("\t----- History of all orders -----");
                         //Console.WriteLine($"\t   Location : {TargetedHistory.First().LocationName}");
                         Console.WriteLine($"\tLocation Id : {TargetedHistory.First().LocationId}");
@@ -237,6 +273,8 @@ namespace Project0
                         }
                         User_CurrCustomerId = "";
                         User_CurrLocationId = "";
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         Console.WriteLine("\t----- Order History Menu -----");
                         Console.WriteLine("\tD => See order details");
                         Console.WriteLine("\tM => Return to main menu");
@@ -260,8 +298,9 @@ namespace Project0
                         }
 
                         var OrderDetails = new DataConnection().GetSingleOrder(User_OrderId);
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         Console.WriteLine("\t----- Individual Order Details -----");
-
 
                         Console.WriteLine($"\tCustomer Name : {OrderDetails.First().FirstName} {OrderDetails.First().LastName}");
                         Console.WriteLine($"\t  Customer Id : {OrderDetails.First().CustomerId}");
@@ -277,6 +316,8 @@ namespace Project0
                             Console.WriteLine("\t----------");
                         }
                         Console.WriteLine($"\t----------");
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         User_CurrCustomerId = "";
                         User_CurrLocationId = "";
                         UserInput = "MainMenu";
@@ -304,7 +345,7 @@ namespace Project0
                     var User_ProductQuantity = "";
                     int intUser_ProductQuantity;
 
-
+                    Console.WriteLine("");
                     Console.WriteLine("\t----- Order Menu -----");
                     Console.WriteLine("\tA => Add product to cart");
                     Console.WriteLine("\tR => Remove product from cart");
@@ -319,7 +360,8 @@ namespace Project0
                     {
 
                         var LocationInvetory = new DataConnection().GetLocationStock(int.Parse(User_CurrLocationId));
-
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         Console.WriteLine("\t----- Location Stock Report -----");
                         Console.WriteLine($"\tLocation Name : {LocationInvetory.First().LocationName}");
                         Console.WriteLine($"\t  Location Id : {LocationInvetory.First().LocationId}");
@@ -332,6 +374,8 @@ namespace Project0
                             Console.WriteLine($"\t  Quantity : {order.Quantity}");
                             Console.WriteLine("\t========================");
                         }
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         UserInput = "o";
 
 
@@ -389,6 +433,7 @@ namespace Project0
                     else if (UserInput == "v")
                     {
                         var ItemsInCart = CurrentCart.InvetoryItems();
+                        Console.WriteLine("");
                         Console.WriteLine("\t----- Current Order Information -----");
                         Console.WriteLine($"\tCustomer Id : {User_CurrCustomerId}");
                         Console.WriteLine($"\tLocation Id : {User_CurrLocationId}");
@@ -399,6 +444,8 @@ namespace Project0
                             Console.WriteLine($"\t Quantity : {order.Quantity}");
                             Console.WriteLine("\t========================");
                         }
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         UserInput = "o";
                     }
                     else if (UserInput == "p")
