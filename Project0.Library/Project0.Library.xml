@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Project0.Library</name>
+    </assembly>
+    <members>
+        <member name="T:Project0.Library.Cart">
+            <summary>
+            Cart Class handles a product list to hold items that will be placed on order.
+            </summary>
+            <remarks>
+            This class can add, remove, invetory and place orders on a list of items.
+            </remarks>
+        </member>
+        <member name="P:Project0.Library.Cart.Products">
+            <summary>
+            The Cart class properties are all required in order to process a final order
+            </summary>
+            <value>List that holds items to be placed on order.</value>
+        </member>
+        <member name="P:Project0.Library.Cart.OrderId">
+            <value>If user places order, this will be the OrderId for that order.</value>
+        </member>
+        <member name="P:Project0.Library.Cart.CustomerId">
+            <value>CustomerId of customer who the order is being placed for.</value>
+        </member>
+        <member name="P:Project0.Library.Cart.LocationId">
+            <value>LocationId of location where the order will be placed at.</value>
+        </member>
+        <member name="P:Project0.Library.Cart.OrderDate">
+            <value>Time and Date that the cart was created.</value>
+        </member>
+        <member name="M:Project0.Library.Cart.#ctor">
+            <summary>
+            This Cart class constructor generates an GUID for the OrderId,
+            a DateTime object for the create date, and instantiates
+            a new Products list for OrderItems.
+            </summary>
+        </member>
+        <member name="M:Project0.Library.Cart.InvetoryItems">
+            <summary>
+            This method is used to see what items are in the Products List.
+            </summary>
+            <returns>List&lt;OrderItems&gt; to represent items in the cart.</returns>
+        </member>
+        <member name="M:Project0.Library.Cart.InvetoryItems(System.Guid)">
+            <summary>
+            This method is used to see if a particular item is in the Products List.
+            </summary>
+            <returns>int? to represent the number of a particular item in the cart.</returns>
+        </member>
+        <member name="M:Project0.Library.Cart.Add(Project0.DataAccess.Entities.OrderItems)">
+            <summary>
+            This method is used add an OrderItems object to the cart.
+            </summary>
+            <returns>void</returns>
+        </member>
+        <member name="M:Project0.Library.Cart.Remove(System.Guid)">
+            <summary>
+            This method is used remove an OrderItems object to the cart.
+            </summary>
+            <returns>bool - true means the item was removed, false means the item was not removed</returns>
+        </member>
+        <member name="M:Project0.Library.Cart.PlaceOrder">
+            <summary>
+            This method is used to place OrderItems in cart on order.
+            It has 3 parts, rechecking the location stock, depleting the location stock and creating the order in the database.
+            </summary>
+            <returns>bool - true means the items were ordered, false means the items were not removed</returns>
+        </member>
+    </members>
+</doc>

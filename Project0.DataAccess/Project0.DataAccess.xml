@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Project0.DataAccess</name>
+    </assembly>
+    <members>
+        <member name="T:Project0.DataAccess.DataConnection">
+            <summary>
+            This class handles DataBase Connection returns.
+            </summary>
+            <remarks>
+            This class needs to be DRY'd, up which is in process on the /repo-pattern branch on github
+            </remarks>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.#ctor">
+            <summary>
+            This method was to implemented as a way to use dbContext.
+            </summary>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.CreateCustomer(System.String,System.String)">
+            <summary>
+            This method creates a customer in the database.
+            It needs two strings, a first name and last name.
+            </summary>
+            <returns>
+            Customers Object that contains the customer name and id.
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.ValidateCustomerId(System.String)">
+            <summary>
+            This method validates a CustomerId against all CustomerIds in the database
+            </summary>
+            <returns>
+            bool - true if valid CustomerId, fase if not valid CustomerId
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.ValidateProductId(System.String)">
+            <summary>
+            This method validates a ProductId against all ProductId in the database
+            </summary>
+            <returns>
+            bool - true if valid ProductId, fase if not valid ProductId
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.ValidateLocationId(System.String)">
+            <summary>
+            This method validates a LocationId against all LocationId in the database
+            </summary>
+            <returns>
+            bool - true if valid LocationId, fase if not valid LocationId
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.ValidateOrderId(System.String)">
+            <summary>
+            This method validates a OrderId against all OrderId in the database
+            </summary>
+            <returns>
+            bool - true if valid OrderId, fase if not valid OrderId
+            </returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:Project0.DataAccess.DataConnection.GetAllCustomers" -->
+        <member name="M:Project0.DataAccess.DataConnection.GetASingleCustomer(System.String)">
+            <summary>
+            This method returns information for a single user in the db by CustomerId
+            </summary>
+            <returns>
+            Customers object with all the information for a single user
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.GetASingleCustomer(System.String,System.String)">
+            <summary>
+            This method returns information for a single user in the db by a first and last name search
+            </summary>
+            <returns>
+            Customers object with all the information for a single user
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.SingleCustomerHandler(System.Collections.Generic.IEnumerable{Project0.DataAccess.Entities.Customers})">
+            <summary>
+            This method handles an IEnumerable list of Customers that contain a single customer.
+            </summary>
+            <returns>
+            Customers object with all the information for a single user
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.GetLocationStock(System.Int32)">
+            <summary>
+            This method returns an invetory of items and all thier information at a given location
+            </summary>
+            <returns>
+            IQueryable of LocationandStockDesc objects
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.ValidateStock(System.Nullable{System.Int32},System.String,System.Int32,System.Nullable{System.Int32})">
+            <summary>
+            This method checks to see if a given location more than a given amount
+            The given amount is a sum of the item already in Cart.Products, along with the requesting abount.
+            </summary>
+            <returns>
+            bool - true if there are enough items, false if there are not enough items.
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.GetSingleOrder(System.String)">
+            <summary>
+            This method will return the order details of a single order.
+            </summary>
+            <returns>
+            IEnumerable of OrderHistory - Details of a single order
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.GetOrderHistory(System.String)">
+            <summary>
+            This method will return all orders the customer has ever placed given a CustomerId.
+            </summary>
+            <returns>
+            IEnumerable of Orders
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.GetOrderHistory(System.Nullable{System.Int32})">
+            <summary>
+            This method will return all orders a location has ever recieved given a LocationId.
+            </summary>
+            <returns>
+            IEnumerable of Orders
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.UpdateLocationStock(System.Guid,System.Nullable{System.Int32},System.Nullable{System.Int32})">
+            <summary>
+            This method will return all orders a location has ever recieved given a LocationId.
+            </summary>
+            <returns>
+            IEnumerable of Orders
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.CreateOrder(System.Guid,System.Guid,System.Nullable{System.Int32},System.DateTime)">
+            <summary>
+            This method will place order in the Orders table in the database,
+            it only save the OrderId, CustomerId, LocationId and OrderDate
+            </summary>
+            <returns>
+            bool - true if order save was successful, false if order save was not
+            </returns>
+        </member>
+        <member name="M:Project0.DataAccess.DataConnection.CreateOrderItems(System.Collections.Generic.List{Project0.DataAccess.Entities.OrderItems})">
+            <summary>
+            This method will place OrderItems into the OrderItems table
+            It only saves the OrderId, ProductId and quantity.
+            </summary>
+            <returns>
+            bool - true if order save was successful, false if order save was not
+            </returns>
+        </member>
+    </members>
+</doc>

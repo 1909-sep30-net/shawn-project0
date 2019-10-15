@@ -8,11 +8,21 @@ using System.Linq;
 
 namespace Project0.DataAccess
 {
+
+    /// <summary>
+    /// This class handles DataBase Connection returns.
+    /// </summary>
+    /// <remarks>
+    /// This class needs to be DRY'd, up which is in process on the /repo-pattern branch on github
+    /// </remarks>
     public class DataConnection
     {
         private project0Context db;
         private DbContextOptions<project0Context> options;
 
+        /// <summary>
+        /// This method was to implemented as a way to use dbContext.
+        /// </summary>
         public DataConnection()
         {
             //DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -24,6 +34,13 @@ namespace Project0.DataAccess
 
         //Create Methods
         //Customers
+        /// <summary>
+        /// This method creates a customer in the database.
+        /// It needs two strings, a first name and last name.
+        /// </summary>
+        /// <returns>
+        /// Customers Object that contains the customer name and id.
+        /// </returns>
         public Customers CreateCustomer(string firstName, string lastName)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -55,6 +72,12 @@ namespace Project0.DataAccess
 
         //Retrieval Methods
         // Validation - Customer
+        /// <summary>
+        /// This method validates a CustomerId against all CustomerIds in the database
+        /// </summary>
+        /// <returns>
+        /// bool - true if valid CustomerId, fase if not valid CustomerId
+        /// </returns>
         public static bool ValidateCustomerId(string userInput)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -74,6 +97,12 @@ namespace Project0.DataAccess
 
         //Retrieval Methods
         // Validation - ProductID
+        /// <summary>
+        /// This method validates a ProductId against all ProductId in the database
+        /// </summary>
+        /// <returns>
+        /// bool - true if valid ProductId, fase if not valid ProductId
+        /// </returns>
         public static bool ValidateProductId(string userInput)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -92,6 +121,14 @@ namespace Project0.DataAccess
 
         //Retrieval Methods
         // Validation - LocationId
+        //Retrieval Methods
+        // Validation - ProductID
+        /// <summary>
+        /// This method validates a LocationId against all LocationId in the database
+        /// </summary>
+        /// <returns>
+        /// bool - true if valid LocationId, fase if not valid LocationId
+        /// </returns>
         public static bool ValidateLocationId(string userInput)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -114,7 +151,13 @@ namespace Project0.DataAccess
         }
 
         //Retrieval Methods
-        // Validation - LocationId
+        // Validation - OrderId
+        /// <summary>
+        /// This method validates a OrderId against all OrderId in the database
+        /// </summary>
+        /// <returns>
+        /// bool - true if valid OrderId, fase if not valid OrderId
+        /// </returns>
         public static bool ValidateOrderId(string userInput)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -137,6 +180,12 @@ namespace Project0.DataAccess
 
         // Retrieveal Methods
         // Customers
+        /// <summary>
+        /// This method gets a list of all customers in the database
+        /// </summary>
+        /// <returns>
+        /// IEnumerable<Customers>, list of all customers
+        /// </returns>
         public IEnumerable<Customers> GetAllCustomers()
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -147,17 +196,29 @@ namespace Project0.DataAccess
             return customers;
         }
 
-        public Customers GetASingleCustomer(string userId)
+        /// <summary>
+        /// This method returns information for a single user in the db by CustomerId
+        /// </summary>
+        /// <returns>
+        /// Customers object with all the information for a single user
+        /// </returns>
+        public Customers GetASingleCustomer(string customerId)
         {
             Console.WriteLine("\tSearching by Id...");
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
                 .UseSqlServer(SecretConfiguration.SecretString)
                 .Options;
             var db = new project0Context(options);
-            IEnumerable<Customers> customers = db.Customers.Where(n => n.CustomerId.ToString().Contains(userId));
+            IEnumerable<Customers> customers = db.Customers.Where(n => n.CustomerId.ToString().Contains(customerId));
             return SingleCustomerHandler(customers);
         }
 
+        /// <summary>
+        /// This method returns information for a single user in the db by a first and last name search
+        /// </summary>
+        /// <returns>
+        /// Customers object with all the information for a single user
+        /// </returns>
         public Customers GetASingleCustomer(string firstName, string lastName)
         {
             Console.WriteLine("\tSearching by Name...");
@@ -170,6 +231,12 @@ namespace Project0.DataAccess
             return SingleCustomerHandler(customers);
         }
 
+        /// <summary>
+        /// This method handles an IEnumerable list of Customers that contain a single customer.
+        /// </summary>
+        /// <returns>
+        /// Customers object with all the information for a single user
+        /// </returns>
         public Customers SingleCustomerHandler(IEnumerable<Customers> customerQuery)
         {
             var CustomerResult = new Customers();
@@ -185,6 +252,12 @@ namespace Project0.DataAccess
 
         // Retrieval Methods
         // Store Invetory
+        /// <summary>
+        /// This method returns an invetory of items and all thier information at a given location
+        /// </summary>
+        /// <returns>
+        /// IQueryable of LocationandStockDesc objects
+        /// </returns>
         public IQueryable<LocationAndStockDesc> GetLocationStock(int locationid)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -204,6 +277,13 @@ namespace Project0.DataAccess
         }
 
         // See if there is enough of a product in stock at a location
+        /// <summary>
+        /// This method checks to see if a given location more than a given amount
+        /// The given amount is a sum of the item already in Cart.Products, along with the requesting abount.
+        /// </summary>
+        /// <returns>
+        /// bool - true if there are enough items, false if there are not enough items.
+        /// </returns>
         public static bool ValidateStock(int? locationId, string productId, int quantity, int? cartQuantity)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -222,6 +302,12 @@ namespace Project0.DataAccess
 
         //Retrieval Methods
         // Get details of an order
+        /// <summary>
+        /// This method will return the order details of a single order.
+        /// </summary>
+        /// <returns>
+        /// IEnumerable of OrderHistory - Details of a single order
+        /// </returns>
         public IEnumerable<OrderHistory> GetSingleOrder(string orderId)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -241,6 +327,12 @@ namespace Project0.DataAccess
 
         // Retrieval Methods
         // Get all History of custmer
+        /// <summary>
+        /// This method will return all orders the customer has ever placed given a CustomerId.
+        /// </summary>
+        /// <returns>
+        /// IEnumerable of Orders
+        /// </returns>
         public IEnumerable<Orders> GetOrderHistory(string customerId)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -257,6 +349,12 @@ namespace Project0.DataAccess
 
         //Retrieval
         // Get all History of store
+        /// <summary>
+        /// This method will return all orders a location has ever recieved given a LocationId.
+        /// </summary>
+        /// <returns>
+        /// IEnumerable of Orders
+        /// </returns>
 
         public IEnumerable<Orders> GetOrderHistory(int? locationId)
         {
@@ -271,10 +369,16 @@ namespace Project0.DataAccess
             return AllOrders;
         }
 
-        
+
         // Place an order
-         // Update
-         // Update Location Stock
+        // Update
+        // Update Location Stock
+        /// <summary>
+        /// This method will return all orders a location has ever recieved given a LocationId.
+        /// </summary>
+        /// <returns>
+        /// IEnumerable of Orders
+        /// </returns>
         public bool UpdateLocationStock(Guid productId, int? locationId, int? quantity)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -300,6 +404,13 @@ namespace Project0.DataAccess
 
         //Create
         //Create Order
+        /// <summary>
+        /// This method will place order in the Orders table in the database,
+        /// it only save the OrderId, CustomerId, LocationId and OrderDate
+        /// </summary>
+        /// <returns>
+        /// bool - true if order save was successful, false if order save was not
+        /// </returns>
         public bool CreateOrder(Guid orderId, Guid customerId, int? LocationId, DateTime orderDate)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -314,12 +425,29 @@ namespace Project0.DataAccess
             NewOrder.OrderDate = orderDate;
 
             db.Orders.Add(NewOrder);
-            db.SaveChanges();
-            return true;
+
+            try
+            {
+                db.SaveChanges();
+                return true;
+            } catch(DbUpdateException ex)
+            {
+                Console.WriteLine("Something went wrong when saving to the database, try again and if the error persists contact a supervisor");
+                Console.WriteLine($"Error : {ex}");
+                return false;
+            }
+
         }
 
         //Create
         // Create Order Items
+        /// <summary>
+        /// This method will place OrderItems into the OrderItems table
+        /// It only saves the OrderId, ProductId and quantity.
+        /// </summary>
+        /// <returns>
+        /// bool - true if order save was successful, false if order save was not
+        /// </returns>
         public bool CreateOrderItems(List<OrderItems> products)
         {
             DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
@@ -336,9 +464,18 @@ namespace Project0.DataAccess
 
                 db.OrderItems.Add(NewOrderItem);
             }
-            db.SaveChanges();
 
-            return true;
+            try
+            {
+                db.SaveChanges();
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine("Something went wrong when saving to the database, try again and if the error persists contact a supervisor");
+                Console.WriteLine($"Error : {ex}");
+                return false;
+            }
         }
 
 
