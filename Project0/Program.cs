@@ -75,6 +75,8 @@ namespace Project0
                     }
                     else
                     {
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         Console.WriteLine("\tCreation Error! Please try again and if the problem persists, contact a supervisor.");
                         logger.Warn($"Invalid user input \"{User_FirstName} or {User_LastName}\".");
                     }
@@ -125,6 +127,8 @@ namespace Project0
                     }
                     else
                     {
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         Console.WriteLine("\tCustomer does not exist in the database. Please try again and if the problem persists, contact a supervisor.");
                         logger.Warn($"Invalid user input \"{User_FirstName} or {User_LastName}\".");
                         UserInput = "n";
@@ -184,6 +188,8 @@ namespace Project0
                         }
                         catch (InvalidOperationException ex)
                         {
+                            Console.WriteLine("");
+                            Console.WriteLine("");
                             Console.WriteLine("\tThere are no orders for this customer yet.");
                             Console.WriteLine("\t----------");
                             Console.WriteLine("");
@@ -237,6 +243,8 @@ namespace Project0
                             }
                             catch (InvalidOperationException ex)
                             {
+                                Console.WriteLine("");
+                                Console.WriteLine("");
                                 Console.WriteLine("There was an error while retrieving information from database.");
                                 Console.WriteLine("If the error persists, please contact a supervisor.");
                                 Console.WriteLine($"Error details: {ex}");
@@ -262,6 +270,8 @@ namespace Project0
                     User_CurrLocationId = Console.ReadLine();
                     if (!DataConnection.ValidateLocationId(User_CurrLocationId))
                     {
+                        Console.WriteLine("");
+                        Console.WriteLine("");
                         Console.WriteLine("\tInvalid Location Id, Please try again, if the promblem persists talk with a supervisor.");
                         logger.Warn($"Invalid user input \"{User_CurrLocationId}\".");
                         User_CurrLocationId = "";
@@ -438,6 +448,8 @@ namespace Project0
                         }
                         else
                         {
+                            Console.WriteLine("");
+                            Console.WriteLine("");
                             Console.WriteLine($"\tThe location you have selected does not have {User_ProductQuantity} of that item.");
                             Console.WriteLine("\tTry a different location or reselect the product and choose less.");
                             logger.Warn($"Location out of stock of item {User_CurrProductId}");
