@@ -156,7 +156,7 @@ namespace Project0
                         Console.WriteLine("\tInvalid Customer Id.");
                         logger.Warn($"Invalid user input \"{User_CurrCustomerId}\".");
                         User_CurrCustomerId = "";
-                        UserInput = "c";
+                        UserInput = "MainMenu";
                         
                     }
                     else
@@ -275,7 +275,7 @@ namespace Project0
                         Console.WriteLine("\tInvalid Location Id, Please try again, if the promblem persists talk with a supervisor.");
                         logger.Warn($"Invalid user input \"{User_CurrLocationId}\".");
                         User_CurrLocationId = "";
-                        UserInput = "s";
+                        UserInput = "m";
                     }
                     else
                     {
@@ -528,8 +528,8 @@ namespace Project0
                 }
                 else
                 {
-                    Console.Write("Invalid option selected, please try again: ");
-                    UserInput = Console.ReadLine();
+                    Console.Write("Invalid option selected, please try again!");
+                    UserInput = "MainMenu";
                 }
             }
         }
