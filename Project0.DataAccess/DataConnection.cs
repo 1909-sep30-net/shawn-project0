@@ -17,6 +17,9 @@ namespace Project0.DataAccess
     /// </remarks>
     public class DataConnection
     {
+
+        private static NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+
         private project0Context db;
         private DbContextOptions<project0Context> options;
 
@@ -63,7 +66,8 @@ namespace Project0.DataAccess
                 // Exceptions:
                 //   T:Microsoft.EntityFrameworkCore.DbUpdateException:
                 //     An error is encountered while saving to the database.
-                Console.WriteLine($"There was a database error :\n{ex}");
+                Console.WriteLine($"There was a database error, please try again and if the error persists, contact a supervisor :\n{ex}");
+                logger.Error($"There was a database error while creating a customer :\n{ex}");
                 return new Customers();
             }
 
@@ -398,8 +402,20 @@ namespace Project0.DataAccess
             }
             
             CurrentItem.First().Quantity -= (int)quantity;
-            db.SaveChanges();
-            return true;
+
+            try
+            {
+                db.SaveChanges();
+                return true;
+            }
+            catch (DbUpdateException ex)
+            {
+                Console.WriteLine("There was a database error, try again and if the problem persists, contact a supervisor.");
+                Console.WriteLine($"Error : {ex}");
+                logger.Error($"There was a database error while creating a customer :\n{ex}");
+                return false;
+            }
+            
         }
 
         //Create
@@ -434,6 +450,7 @@ namespace Project0.DataAccess
             {
                 Console.WriteLine("Something went wrong when saving to the database, try again and if the error persists contact a supervisor");
                 Console.WriteLine($"Error : {ex}");
+                logger.Error($"There was a database error while saving to the Orders table :\n{ex}");
                 return false;
             }
 
@@ -474,6 +491,7 @@ namespace Project0.DataAccess
             {
                 Console.WriteLine("Something went wrong when saving to the database, try again and if the error persists contact a supervisor");
                 Console.WriteLine($"Error : {ex}");
+                logger.Error($"There was a database error while saving to the OrderItems table :\n{ex}");
                 return false;
             }
         }

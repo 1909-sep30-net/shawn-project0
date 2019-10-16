@@ -41,11 +41,11 @@ namespace Project0
                     Console.WriteLine("\tBanana Store Kiosk");
                     Console.WriteLine("\t----- Main Menu -----");
                     Console.WriteLine("\tEnter a command : ");
-                    Console.WriteLine("\tA => Add new customer");
-                    Console.WriteLine("\tN => Search for customer by name");
-                    Console.WriteLine("\tC => View customer history");
-                    Console.WriteLine("\tS => View store history");
-                    Console.WriteLine("\tO => Start new order");
+                    Console.WriteLine("\t[ A ]\tAdd new customer");
+                    Console.WriteLine("\t[ N ]\tSearch for customer by name");
+                    Console.WriteLine("\t[ C ]\tView customer history");
+                    Console.WriteLine("\t[ S ]\tView store history");
+                    Console.WriteLine("\t[ O ]\tStart new order");
                     Console.Write("\t");
                     UserInput = Console.ReadLine().ToLower();
                 }
@@ -94,10 +94,10 @@ namespace Project0
                     Console.WriteLine("");
                     Console.WriteLine("");
                     Console.WriteLine("\t---- Search for a customer -----");
-                    Console.Write("\tEnter first name of customer :");
+                    Console.Write("\tEnter first name of customer : ");
                     User_FirstName = Console.ReadLine();
 
-                    Console.Write("\tEnter last name of customer :");
+                    Console.Write("\tEnter last name of customer : ");
                     User_LastName = Console.ReadLine();
 
                     var SearchResults = new DataConnection().GetASingleCustomer(User_FirstName, User_LastName);
@@ -110,8 +110,8 @@ namespace Project0
                         Console.WriteLine($"\tName: {SearchResults.FirstName} {SearchResults.LastName}");
                         Console.WriteLine($"\tCustomer Id: {SearchResults.CustomerId}");
                         Console.WriteLine("\t----------");
-                        Console.WriteLine("\tX => Copy Customer Id to clipboard and return to main menu");
-                        Console.WriteLine("\tAny other key => Return to mainmenu with out copy");
+                        Console.WriteLine("\t[ X ]\tCopy Customer Id to clipboard and return to main menu");
+                        Console.WriteLine("\t[ M ]\tReturn to main menu with out copy");
                         Console.Write("\t");
                         UserInput = Console.ReadLine().ToLower();
                         if (UserInput == "x")
@@ -181,8 +181,8 @@ namespace Project0
                             }
 
                             Console.WriteLine("\t----- Order History Menu -----");
-                            Console.WriteLine("\tD => See order details");
-                            Console.WriteLine("\tM => Return to main menu");
+                            Console.WriteLine("\t[ D ]\tSee order details");
+                            Console.WriteLine("\t[ M ]\tReturn to main menu");
                             Console.Write("\t ");
                             UserInput = Console.ReadLine().ToLower();
                         }
@@ -301,8 +301,8 @@ namespace Project0
                         Console.WriteLine("");
                         Console.WriteLine("");
                         Console.WriteLine("\t----- Order History Menu -----");
-                        Console.WriteLine("\tD => See order details");
-                        Console.WriteLine("\tM => Return to main menu");
+                        Console.WriteLine("\t[ D ]\tSee order details");
+                        Console.WriteLine("\t[ M ]\tReturn to main menu");
                         Console.Write("\t ");
                         UserInput = Console.ReadLine().ToLower();
                     }
@@ -379,12 +379,12 @@ namespace Project0
 
                     Console.WriteLine("");
                     Console.WriteLine("\t----- Order Menu -----");
-                    Console.WriteLine("\tA => Add product to cart");
-                    Console.WriteLine("\tR => Remove product from cart");
-                    Console.WriteLine("\tV => View current cart");
-                    Console.WriteLine($"\tI => View current location invetory");
-                    Console.WriteLine("\tP => Place everything in cart on order");
-                    Console.WriteLine("\tXCX => Cancel entire order");
+                    Console.WriteLine("\t[ A ]\tAdd product to cart");
+                    Console.WriteLine("\t[ R ]\tRemove product from cart");
+                    Console.WriteLine("\t[ V ]\tView current cart");
+                    Console.WriteLine($"\t[ I ]\tView current location invetory");
+                    Console.WriteLine("\t[ P ]\tPlace everything in cart on order");
+                    Console.WriteLine("\t[ XCX ]\tCancel entire order");
                     Console.Write("\t");
                     UserInput = Console.ReadLine().ToLower();
 
