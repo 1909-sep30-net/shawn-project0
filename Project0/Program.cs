@@ -131,7 +131,7 @@ namespace Project0
                         Console.WriteLine("");
                         Console.WriteLine("\tCustomer does not exist in the database. Please try again and if the problem persists, contact a supervisor.");
                         logger.Warn($"Invalid user input \"{User_FirstName} or {User_LastName}\".");
-                        UserInput = "n";
+                        UserInput = "MainMenu";
                         User_FirstName = "";
                         User_LastName = "";
                     }
@@ -226,7 +226,7 @@ namespace Project0
                                 Console.WriteLine("\t----- Individual Order Details -----");
                                 Console.WriteLine($"\tCustomer Name : {OrderDetails.First().FirstName} {OrderDetails.First().LastName}");
                                 Console.WriteLine($"\t  Customer Id : {OrderDetails.First().CustomerId}");
-                                Console.WriteLine($"\tLocation Name :{OrderDetails.First().LocationName}");
+                                Console.WriteLine($"\tLocation Name : {OrderDetails.First().LocationName}");
                                 Console.WriteLine($"\t   Location Id: {OrderDetails.First().LocationId}");
                                 foreach (var item in OrderDetails)
                                 {
@@ -332,7 +332,7 @@ namespace Project0
 
                         Console.WriteLine($"\tCustomer Name : {OrderDetails.First().FirstName} {OrderDetails.First().LastName}");
                         Console.WriteLine($"\t  Customer Id : {OrderDetails.First().CustomerId}");
-                        Console.WriteLine($"\tLocation Name :{OrderDetails.First().LocationName}");
+                        Console.WriteLine($"\tLocation Name : {OrderDetails.First().LocationName}");
                         Console.WriteLine($"\t   Location Id: {OrderDetails.First().LocationId}");
                         foreach (var item in OrderDetails)
                         {
