@@ -23,12 +23,19 @@ namespace Project0
 
             var testcust = customerRepository.GetAllCustomers().ToList();
 
-            foreach (var item in testcust)
-            {
-                Console.WriteLine(item.FirstName);
+            //foreach (var item in testcust)
+            //{
+            //    Console.WriteLine(item.FirstName);
 
-            } 
-               
+            //}
+
+            //var testsinglecust = customerRepository.GetSingleCustomer("518B9A19-BD55-4497-A01F-2E48F23D8D30");
+
+            //Console.WriteLine(testsinglecust.FirstName);
+
+            //var testnewcust = customerRepository.AddCustomer("Big", "Bird");
+
+            //Console.WriteLine(testnewcust);
 
 
             ////Console.WriteLine(FiggleFonts.SubZero.Render("Project Zero"));

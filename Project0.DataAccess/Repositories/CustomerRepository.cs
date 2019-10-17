@@ -21,12 +21,25 @@ namespace Project0.DataAccess.Repositories
 
         public IEnumerable<Library.Models.Customers> GetAllCustomers()
         {
-            IEnumerable<DataAccess.Entities.Customers> customers = _dbContext.Customers;
-
+            IEnumerable<Entities.Customers> customers = _dbContext.Customers;
             return customers.Select(Mapper.MapAllCustomers);
         }
 
+        public Library.Models.Customers GetSingleCustomer(string customerId)
+        {
+            Entities.Customers customer = _dbContext.Customers.Where(n => n.CustomerId.ToString().Contains(customerId)).First();
+            return Mapper.MapAllCustomers(customer);
+        }
 
+        public Library.Models.Customers AddCustomer(string firstName, string lastName)
+        {
+            Library.Models.Customers NewCustomer = new Library.Models.Customers(firstName, lastName);
+
+            _dbContext.Customers.Add( Mapper.MapAllCustomers(NewCustomer) );
+            _dbContext.SaveChanges();
+
+            return NewCustomer;
+        }
 
         #region IDisposable Support
         private bool _disposedValue = false; // To detect redundant calls

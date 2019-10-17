@@ -10,6 +10,9 @@ namespace Project0.Library.Interfaces
 
         IEnumerable<Customers> GetAllCustomers();
 
+        Library.Models.Customers GetSingleCustomer(string customerId);
+
+        Library.Models.Customers AddCustomer(string firstName, string lastName);
 
     }
 }

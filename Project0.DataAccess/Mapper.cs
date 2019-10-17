@@ -18,6 +18,14 @@ namespace Project0.DataAccess
             };
         }
 
-
+        public static Entities.Customers MapAllCustomers(Library.Models.Customers customers)
+        {
+            return new Entities.Customers
+            {
+                CustomerId = customers.CustomerId,
+                FirstName = customers.FirstName,
+                LastName = customers.LastName
+            };
+        }
     }
 }

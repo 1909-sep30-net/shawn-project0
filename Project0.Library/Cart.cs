@@ -10,63 +10,50 @@ namespace Project0.Library
 {
     public class Cart
     {
-        //public List<OrderItems> Products { get; set; }
-        //public Guid OrderId { get; set; }
-        //public Guid CustomerId { get; set; }
-        //public int? LocationId { get; set; }
-        //public DateTime OrderDate { get; set; }
+        public List<Library.Models.OrderItems> Products { get; set; }
+        public Guid OrderId { get; set; }
+        public Guid CustomerId { get; set; }
+        public int? LocationId { get; set; }
+        public DateTime OrderDate { get; set; }
 
-        //public Cart()
-        //{
-        //    OrderId = Guid.NewGuid();
-        //    Products = new List<OrderItems>();
-        //    OrderDate = DateTime.Now;
-        //}
+        public Cart()
+        {
+            OrderId = Guid.NewGuid();
+            Products = new List<Library.Models.OrderItems>();
+            OrderDate = DateTime.Now;
+        }
 
-        //public List<OrderItems> InvetoryItems()
-        //{
-        //    return Products;
-        //}
+        public List<Library.Models.OrderItems> InvetoryItems()
+        {
+            return Products;
+        }
 
-        //public int? InvetoryItems(Guid productId)
-        //{
-        //    foreach (var item in Products)
-        //    {
-        //        if (item.ProductId.Equals(productId))
-        //        {
-        //            return item.Quantity;
-        //        }
-        //    }
+        public void Add(Library.Models.OrderItems orderItem)
+        {
+            foreach (var item in Products)
+            {
+                if (item.ProductId == orderItem.ProductId)
+                {
+                    item.Quantity += orderItem.Quantity;
+                    return;
+                }
+            }
 
-        //    return 0;
-        //}
+            Products.Add(orderItem);
+        }
 
-        //public void Add(OrderItems orderItem)
-        //{
-        //    foreach (var item in Products)
-        //    {
-        //        if (item.ProductId == orderItem.ProductId)
-        //        {
-        //            item.Quantity += orderItem.Quantity;
-        //            return;
-        //        }
-        //    }
-
-        //    Products.Add(orderItem);
-        //}
-
-        //public bool Remove(Guid productId)
-        //{
-        //    foreach (var item in Products)
-        //    {
-        //        if (item.ProductId.Equals(productId))
-        //        {
-        //            Products.Remove(item);
-        //            return true;
-        //        }
-        //    }
-        //    return false;
-        //}
+        public bool Remove(Guid productId)
+        {
+            foreach (var item in Products)
+            {
+                if (item.ProductId.Equals(productId))
+                {
+                    Products.Remove(item);
+                    return true;
+                }
+            }
+            return false;
+        }
 
 
         //public bool PlaceOwnOrder()
