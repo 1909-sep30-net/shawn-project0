@@ -23,36 +23,36 @@ namespace Project0.DataAccess
             //This would not work here with or without the using modifier... why?
         }
 
-        //Create Methods
-        //Customers
-        public Customers CreateCustomer(string firstName, string lastName)
-        {
-            DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
-                .UseSqlServer(SecretConfiguration.SecretString)
-                .Options;
-            var db = new project0Context(options);
+        ////Create Methods
+        ////Customers
+        //public Customers CreateCustomer(string firstName, string lastName)
+        //{
+        //    DbContextOptions<project0Context> options = new DbContextOptionsBuilder<project0Context>()
+        //        .UseSqlServer(SecretConfiguration.SecretString)
+        //        .Options;
+        //    var db = new project0Context(options);
 
-            var NewCustomer = new Customers();
-            NewCustomer.FirstName = firstName;
-            NewCustomer.LastName = lastName;
+        //    var NewCustomer = new Customers();
+        //    NewCustomer.FirstName = firstName;
+        //    NewCustomer.LastName = lastName;
 
-            db.Add(NewCustomer);
+        //    db.Add(NewCustomer);
             
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateException ex)
-            {
-                // Exceptions:
-                //   T:Microsoft.EntityFrameworkCore.DbUpdateException:
-                //     An error is encountered while saving to the database.
-                Console.WriteLine($"There was a database error :\n{ex}");
-                return new Customers();
-            }
+        //    try
+        //    {
+        //        db.SaveChanges();
+        //    }
+        //    catch (DbUpdateException ex)
+        //    {
+        //        // Exceptions:
+        //        //   T:Microsoft.EntityFrameworkCore.DbUpdateException:
+        //        //     An error is encountered while saving to the database.
+        //        Console.WriteLine($"There was a database error :\n{ex}");
+        //        return new Customers();
+        //    }
 
-            return NewCustomer;
-        }
+        //    return NewCustomer;
+        //}
 
         //Retrieval Methods
         // Validation - Customer
@@ -285,19 +285,19 @@ namespace Project0.DataAccess
 
             
 
-            var CurrentItem = from ls in db.LocationStock
-                              where ((ls.ProductId.Equals(productId)) && (ls.LocationId == locationId))
-                              select ls;
-            if (CurrentItem.Count() != 1)
-            {
-                Console.WriteLine("Item Count too low");
-                return false;
-            }
+        //    var CurrentItem = from ls in db.LocationStock
+        //                      where ((ls.ProductId.Equals(productId)) && (ls.LocationId == locationId))
+        //                      select ls;
+        //    if (CurrentItem.Count() != 1)
+        //    {
+        //        Console.WriteLine("Item Count too low");
+        //        return false;
+        //    }
             
-            CurrentItem.First().Quantity -= (int)quantity;
-            db.SaveChanges();
-            return true;
-        }
+        //    CurrentItem.First().Quantity -= (int)quantity;
+        //    db.SaveChanges();
+        //    return true;
+        //}
 
         //Create
         //Create Order

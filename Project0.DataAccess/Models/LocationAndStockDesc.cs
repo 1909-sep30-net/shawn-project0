@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 
-namespace Project0.DataAccess.Entities
+namespace Project0.DataAccess.Models
 {
     public class LocationAndStockDesc
     {

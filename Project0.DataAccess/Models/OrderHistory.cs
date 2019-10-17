@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Project0.DataAccess.Entities
+namespace Project0.DataAccess.Models
 {
     public class OrderHistory
     {
