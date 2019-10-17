@@ -10,7 +10,7 @@ using Project0.Library.Models;
 
 namespace Project0.DataAccess.Repositories
 {
-    public class CustomerRepository: ICustomerRepository, IDisposable
+    public class CustomerRepository: ICustomerRepository
     {
         private readonly project0Context _dbContext;
 

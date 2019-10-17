@@ -8,7 +8,7 @@ namespace Project0.Library.Interfaces
     public interface ICustomerRepository : IDisposable
     {
 
-        IEnumerable<Customers> GetAllCustomers();
+        public IEnumerable<Customers> GetAllCustomers();
 
         Library.Models.Customers GetSingleCustomer(string customerId);
 

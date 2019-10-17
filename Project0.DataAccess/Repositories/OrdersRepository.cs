@@ -5,45 +5,42 @@ using Microsoft.EntityFrameworkCore;
 using Project0.DataAccess.Entities;
 using System.Linq;
 using Project0.Library.Interfaces;
+using Project0.Library.Models;
 
 namespace Project0.DataAccess.Repositories
 {
-    class LocationStockRepository : ILocationStockRepository, IDisposable
+    class OrdersRepository : IOrdersRepository
     {
+
         private readonly project0Context _dbContext;
 
-        public LocationStockRepository(project0Context dbContext)
+        public OrdersRepository(project0Context dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
 
-        public IEnumerable<Library.Models.LocationStock> GetLocationStock(int? locationId)
+        IEnumerable<Library.Models.Orders> IOrdersRepository.GetAllOrders()
         {
-            IQueryable<Entities.LocationStock> Invetory =   from ls in _dbContext.LocationStock
-                                                            where ls.LocationId == locationId
-                                                            select ls;
+            IQueryable<Entities.Orders> Order = from od in _dbContext.Orders
+                                                select od;
 
-            return Invetory.Select(Mapper.MapLocationStock);
+            return (IEnumerable<Library.Models.Orders>) Order.Select(Mapper.MapSingleOrder);
         }
 
-        public bool UpdateLocationStock(Guid productId, int? locationId, int? quantity)
+        Library.Models.Orders IOrdersRepository.GetSingleOrder(Guid orderId)
         {
-            var CurrentItem = from ls in _dbContext.LocationStock
-                              where ((ls.ProductId.Equals(productId)) && (ls.LocationId == locationId))
-                              select ls;
-            if (CurrentItem.Count() != 1)
-            {
-                return false;
-            } else
-            {
-                CurrentItem.First().Quantity -= (int)quantity;
-                _dbContext.SaveChanges();
-                return true;
-            }
+            IQueryable<Entities.Orders> Order = from od in _dbContext.Orders
+                                                where od.OrderId == orderId
+                                                select od;
+
+            return Order.Select(Mapper.MapSingleOrder).First();
         }
 
-
-
+        void IOrdersRepository.PlaceOrder(Library.Models.Orders orders)
+        {
+            var CurrentOrder = Mapper.MapSingleOrder(orders);
+            _dbContext.Orders.Add(CurrentOrder);
+        }
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
@@ -65,14 +62,14 @@ namespace Project0.DataAccess.Repositories
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~LocationStockRepository()
+        // ~OrdersRepository()
         // {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
         // }
 
         // This code added to correctly implement the disposable pattern.
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
@@ -80,7 +77,5 @@ namespace Project0.DataAccess.Repositories
             // GC.SuppressFinalize(this);
         }
         #endregion
-
     }
 }
-

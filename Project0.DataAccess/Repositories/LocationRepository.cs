@@ -5,45 +5,26 @@ using Microsoft.EntityFrameworkCore;
 using Project0.DataAccess.Entities;
 using System.Linq;
 using Project0.Library.Interfaces;
+using Project0.Library.Models;
 
 namespace Project0.DataAccess.Repositories
 {
-    class LocationStockRepository : ILocationStockRepository, IDisposable
+    class LocationRepository : ILocationsRepository
     {
         private readonly project0Context _dbContext;
 
-        public LocationStockRepository(project0Context dbContext)
+        public LocationRepository(project0Context dbContext)
         {
             _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
         }
-
-        public IEnumerable<Library.Models.LocationStock> GetLocationStock(int? locationId)
+        Library.Models.Locations ILocationsRepository.GetSingleLocation(int? locationId)
         {
-            IQueryable<Entities.LocationStock> Invetory =   from ls in _dbContext.LocationStock
-                                                            where ls.LocationId == locationId
-                                                            select ls;
+            IQueryable<Entities.Locations> Location =   from ls in _dbContext.Locations
+                                                        where ls.LocationId == locationId
+                                                        select ls;
 
-            return Invetory.Select(Mapper.MapLocationStock);
+            return Location.Select(Mapper.MapSingleLocation).First();
         }
-
-        public bool UpdateLocationStock(Guid productId, int? locationId, int? quantity)
-        {
-            var CurrentItem = from ls in _dbContext.LocationStock
-                              where ((ls.ProductId.Equals(productId)) && (ls.LocationId == locationId))
-                              select ls;
-            if (CurrentItem.Count() != 1)
-            {
-                return false;
-            } else
-            {
-                CurrentItem.First().Quantity -= (int)quantity;
-                _dbContext.SaveChanges();
-                return true;
-            }
-        }
-
-
-
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
@@ -65,14 +46,14 @@ namespace Project0.DataAccess.Repositories
         }
 
         // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
-        // ~LocationStockRepository()
+        // ~LocationRepository()
         // {
         //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
         //   Dispose(false);
         // }
 
         // This code added to correctly implement the disposable pattern.
-        public void Dispose()
+        void IDisposable.Dispose()
         {
             // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
             Dispose(true);
@@ -80,7 +61,5 @@ namespace Project0.DataAccess.Repositories
             // GC.SuppressFinalize(this);
         }
         #endregion
-
     }
 }
-

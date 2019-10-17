@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Project0.Library.Models;
+using System.Linq;
 
 namespace Project0.DataAccess
 {
@@ -15,6 +16,7 @@ namespace Project0.DataAccess
                 FirstName = customers.FirstName,
                 LastName = customers.LastName
             };
+            
         }
 
         public static Library.Models.Customers MapAllCustomers(Entities.Customers customers)
@@ -67,7 +69,66 @@ namespace Project0.DataAccess
             };
         }
 
+        public static Entities.Locations MapSingleLocation(Library.Models.Locations locations)
+        {
+            return new Entities.Locations
+            {
+                LocationId = locations.LocationId,
+                LocationName = locations.LocationName
+            };
+        }
 
+        public static Library.Models.Locations MapSingleLocation(Entities.Locations locations)
+        {
+            return new Library.Models.Locations
+            {
+                LocationId = locations.LocationId,
+                LocationName = locations.LocationName
+            };
+        }
+
+        
+        public static Entities.OrderItems MapSingleOrderItems(Library.Models.OrderItems orderItems)
+        {
+            return new Entities.OrderItems
+            {
+                OrderId = orderItems.OrderId,
+                ProductId = orderItems.ProductId,
+                Quantity = orderItems.Quantity
+            };
+        }
+
+        public static Library.Models.OrderItems MapSingleOrderItems(Entities.OrderItems orderItems)
+        {
+            return new Library.Models.OrderItems
+            {
+                OrderId = orderItems.OrderId,
+                ProductId = orderItems.ProductId,
+                Quantity = orderItems.Quantity
+            };
+        }
+
+        public static Entities.Orders MapSingleOrder(Library.Models.Orders orderItems)
+        {
+            return new Entities.Orders
+            {
+                OrderId = orderItems.OrderId,
+                OrderDate = orderItems.OrderDate,
+                CustomerId = orderItems.CustomerId,
+                LocationId = orderItems.LocationId
+            };
+        }
+
+        public static Library.Models.Orders MapSingleOrder(Entities.Orders orderItems)
+        {
+            return new Library.Models.Orders
+            {
+                OrderId = orderItems.OrderId,
+                OrderDate = orderItems.OrderDate,
+                CustomerId = orderItems.CustomerId,
+                LocationId = orderItems.LocationId
+            };
+        }
 
     }
 }
